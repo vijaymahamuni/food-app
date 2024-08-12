@@ -7,7 +7,7 @@ const Header = () => {
     const [btnLogin, setBtnLogin] = useState('Login');
     //Subscribing tot the store using a useSelector
     const cartItem=useSelector((store)=>store.cart.items);
-    console.log(cartItem)
+    // console.log(cartItem)
     return (
         <div className="flex justify-between bg-green-200 items-center">
             <div className="logo-container">
