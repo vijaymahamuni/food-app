@@ -28,16 +28,18 @@ const Body = () => {
         setListofRes(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
         setFilteredRestro(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
     }
+
     if (listofRes.length === 0) {
         return (
             <Shimmer />
 
         )
     }
+    
 
 
     const TopRatedfunc = () => {
-        const TopRatedfilter = listofRes.filter((resData) => resData.info.avgRating > 4.5)
+        const TopRatedfilter = listofRes.filter((resData) => resData.info.avgRating > 4)
         // console.log("avgRating", TopRatedfilter)
         setFilteredRestro(TopRatedfilter)
     }
@@ -70,7 +72,7 @@ const Body = () => {
                 </div>
 
                 <div className="pl-16">
-                    <button className="px-3 py-1 text-black bg-gray-200 hover:bg-gray-300 rounded-md" onClick={TopRatedfunc}>TopRated Restro</button>
+                    <button className="px-3 py-1 text-black bg-gray-200 hover:bg-gray-300 rounded-md" onClick={TopRatedfunc}>Top Rated Restaurant</button>
                 </div>
             </div>
             <div className="flex flex-wrap">

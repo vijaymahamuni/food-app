@@ -27,7 +27,7 @@ const ItemCards = ({ itemcard }) => {
                     <div>
                         <button className="p-1 m-1 w-20 font-bold text-green-600 bg-white absolute my-28 ml-10 rounded-md" onClick={()=>handleAddItems(items)}>ADD</button>
                         <div className="p-2">
-                            <img src={MENUCARD_IMG + items.card.info.imageId} className="w-36 h-32 rounded-lg" />
+                            <img src={MENUCARD_IMG + items.card.info.imageId} className="w-36 h-32 rounded-lg"/>
                         </div>
                     </div>
 
