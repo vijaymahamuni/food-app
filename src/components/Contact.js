@@ -28,12 +28,12 @@ const Contact = () => {
                 </div>
 
             </div>
-            <div className="p-72  bg-orange-300">
+            {/* <div className="p-36  w-6/12 bg-orange-300">
             <input type="text" placeholder="name" className="p-1 m-1 border border-black rounded-md" ></input>
             <input type="text" placeholder="message" className="p-1 m-1 border border-black rounded-md" ></input>
             <button className="p-1 m-1 border border-black rounded-md bg-gray-200">Submit</button>
 
-            </div>
+            </div> */}
 
            
 
