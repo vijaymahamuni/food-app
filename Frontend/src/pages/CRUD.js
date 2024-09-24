@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { REACT_APP_HOST } from "../utils/Host_pass";
-const Login = () => {
+const CRUD = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [users, setUsers] = useState([]);
@@ -113,7 +113,7 @@ const Login = () => {
           LOGIN
         </button>
       </div>
-      {/* <div className="ml-8">
+      <div className="ml-8">
         <h1>Users:</h1>
         {users.map((user, index) => (
           <ul key={index}>
@@ -146,8 +146,8 @@ const Login = () => {
             </div>
           </ul>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
-export default Login;
+export default CRUD;

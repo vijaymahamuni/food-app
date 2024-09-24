@@ -14,6 +14,7 @@ import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import CartItems from "./components/CartItems";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -75,6 +76,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/restromenu/:resId",
         element: <RestroMenucard />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },
