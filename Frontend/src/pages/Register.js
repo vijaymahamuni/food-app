@@ -1,13 +1,32 @@
 import { useState } from "react";
-
+import { REACT_APP_HOST } from "../utils/Host_pass";
+import axios from "axios";
 const Register = () => {
   const [userName, setUserName] = useState();
   const [userEmail, setUserEmail] = useState();
   const [phoneNum, setPhoneNum] = useState();
   const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
 
-  const handleSubmit = () => {};
+  const Register = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${REACT_APP_HOST}/api/register_users`,
+        {
+          userName,
+          userEmail,
+          phoneNum,
+          password,
+        }
+      );
+      console.log("User added:", response.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // setUserName("");
+    // setUserEmail("");
+  };
   return (
     <div className="mt-5  ">
       <div className="mx-auto w-3/12">
@@ -62,20 +81,10 @@ const Register = () => {
             placeholder="Password"
           />
         </div>
-        <div className="mt-10">
-          <input
-            type="password"
-            name="confirm_password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="p-2 w-10/12 font-bold rounded-md"
-            style={{ border: "0.5px solid gray", Opacity: "0.1" }}
-            placeholder="Confirm Password"
-          />
-        </div>
+
         <button
           className="p-2 w-32 rounded-lg font-bold bg-[#eee5cf] text-[#ba373b] mt-10 text-center ml-24"
-          onClick={handleSubmit}
+          onClick={Register}
         >
           Register
         </button>

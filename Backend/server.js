@@ -8,11 +8,12 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3000", // Allow only the React frontend
+    origin: "http://localhost:8080", // Allow only the React frontend
   })
 );
 // MongoDB connection
 mongoose
-  .connect("mongodb://localhost:27017/crud", {
+  .connect("mongodb://localhost:27017/foodApp", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -21,9 +22,15 @@ mongoose
 
 // const User = mongoose.model("User", UserSchema);
 
-const userRoutes = require("./routes/LoginPagedata");
+// const userRoutes = require("./routes/LoginPagedata");
+const RegisterRoutes = require("./routes/RegisterPagedata");
+
 // API route to handle POST request
-app.use("/api/users", userRoutes);
+// app.use("/api/users", userRoutes);
+
+app.use("/api/register_users", RegisterRoutes);
+// app.use("/api/login", RegisterRoutes);
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

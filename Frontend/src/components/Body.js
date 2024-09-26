@@ -35,7 +35,6 @@ const Body = () => {
   if (listofRes.length === 0) {
     return <Shimmer />;
   }
-  console.log(listofRes.length);
   const TopRatedfunc = () => {
     const TopRatedfilter = listofRes.filter(
       (resData) => resData.info.avgRating > 4

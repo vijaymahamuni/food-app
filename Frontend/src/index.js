@@ -15,6 +15,7 @@ import appStore from "./utils/appStore";
 import CartItems from "./components/CartItems";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./components/Profile";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -80,6 +81,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },
