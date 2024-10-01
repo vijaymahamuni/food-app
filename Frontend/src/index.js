@@ -16,6 +16,7 @@ import CartItems from "./components/CartItems";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./components/Profile";
+import ItemsAdd from "./Admin/ItemsAdd";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -85,6 +86,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/addItems",
+        element: <ItemsAdd />,
       },
     ],
   },

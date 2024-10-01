@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
+const connectDB = require("./config/db.js");
+const foodRouter = require("./routes/foodRouter.js");
 // Initialize Express app
 const app = express();
 app.use(express.json());
@@ -11,24 +12,32 @@ app.use(
     origin: "http://localhost:8080", // Allow only the React frontend
   })
 );
+
 // MongoDB connection
-mongoose
-  .connect("mongodb://localhost:27017/foodApp", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error(err));
+connectDB();
+
+//Api End point
+app.use("/api/food", foodRouter);
+
+// mongoose
+//   .connect("mongodb://localhost:27017/foodApp", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("Connected to MongoDB"))
+//   .catch((err) => console.error(err));
+
+// mongodb+srv://Vijay:yajiV1112@cluster0.yhjhf.mongodb.net/?
 
 // const User = mongoose.model("User", UserSchema);
 
 // const userRoutes = require("./routes/LoginPagedata");
-const RegisterRoutes = require("./routes/RegisterPagedata");
+// const RegisterRoutes = require("./routes/RegisterPagedata");
 
 // API route to handle POST request
 // app.use("/api/users", userRoutes);
 
-app.use("/api/register_users", RegisterRoutes);
+// app.use("/api/register_users", RegisterRoutes);
 // app.use("/api/login", RegisterRoutes);
 
 // Start the server
