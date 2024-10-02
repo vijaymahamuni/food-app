@@ -1,104 +1,56 @@
-import { useEffect, useState } from "react";
-import { APP_LOGOIMG } from "../utils/constants";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useEffect } from "react";
+// import { APP_LOGOIMG } from "../utils/constants";
+import { Link } from "react-router-dom";
+// import { useSelector } from "react-redux";
+import SearchIcon from "@mui/icons-material/Search";
+import PersonIcon from "@mui/icons-material/Person";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useNavigate } from "react-router-dom";
+import foodie from "../images/Foodie.png";
 const Header = () => {
-  const [btnLogin, setBtnLogin] = useState("Logout");
+  // const [btnLogin, setBtnLogin] = useState("Logout");
   //Subscribing tot the store using a useSelector
-  const cartItem = useSelector((store) => store.cart.items);
+  // const cartItem = useSelector((store) => store.cart.items);
   // console.log(cartItem)
-  const location = useLocation();
+  // const location = useLocation();
   useEffect(() => {});
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate("/");
+  };
 
   return (
-    <div className="flex justify-between bg-[#eee5cf] items-center">
-      <div className="logo-container">
-        <img className="w-[106px]" src={APP_LOGOIMG} alt="" />
-      </div>
-      <div className="p-3 m-3 ">
-        <ul className="flex">
-          <li className="m-2 p-2 text-[18px] font-[500] hover:text-orange-600">
-            <Link
-              to="/"
-              className={location.pathname === "/" ? "text-orange-600" : ""}
-            >
-              Home
-            </Link>
-          </li>
-          <li className="m-2 p-2 text-[18px] font-[500] hover:text-orange-600">
-            <Link
-              to="/about"
-              className={
-                location.pathname === "/about" ? "text-orange-600" : ""
-              }
-            >
-              About
-            </Link>
-          </li>
-          <li className="m-2 p-2 text-[18px] font-[500] hover:text-orange-600">
-            <Link
-              to="/contact"
-              className={
-                location.pathname === "/contact" ? "text-orange-600" : ""
-              }
-            >
-              Contact
-            </Link>
-          </li>
+    <div className=" h-[70px]  bg-[#f84260] items-center">
+      <div className="flex  w-11/12 mx-auto justify-between ">
+        <div className="cursor-pointer" onClick={handleHome}>
+          <img className="w-[140px] h-[80px]" src={foodie} alt="" />
+          {/* <h1 className="p-2 m-2 text-white font-bold text-xl">Foodie</h1> */}
+        </div>
+        <div>
+          <ul className="flex p-1">
+            <li className="m-2 p-2  text-[18px] font-[500] hover:text-orange-600">
+              <SearchIcon fontSize="medium" className="text-white font-bold " />
+            </li>
 
-          {/* <li className="m-2 p-2 text-[18px] font-[500] hover:text-orange-600">
-            <Link
-              to="/grocery"
-              className={
-                location.pathname === "/grocery" ? "text-orange-600" : ""
-              }
-            >
-              Grocery
-            </Link>
-          </li> */}
-          <li
-            onClick={() => {
-              btnLogin === "Login"
-                ? setBtnLogin("Logout")
-                : setBtnLogin("Login");
-            }}
-            className="m-2 p-2 text-[18px] font-[500] hover:text-orange-600"
-          >
-            <Link
-              to="/login"
-              className={
-                location.pathname === "/login" ? "text-orange-600" : ""
-              }
-            >
-              {btnLogin}
-            </Link>
-          </li>
-          {/* <button onClick={() => {
-                        btnLogin === 'Login' ? setBtnLogin('Logout') : setBtnLogin('Login')
-                    }} className="m-2 p-2 font-[500] text-[18px] hover:text-orange-600">{btnLogin}</button> */}
-
-          <li className="m-2 p-2 font-[500] text-[18px] hover:text-orange-600">
-            <Link
-              to="/cartItems"
-              className={
-                location.pathname === "/cartItems" ? "text-orange-600" : ""
-              }
-            >
-              Cart-({cartItem.length})
-            </Link>
-          </li>
-          <li className="m-2 p-2 font-[500] text-[18px] hover:text-orange-600">
-            <Link
-              to="/profile"
-              className={
-                location.pathname === "/profile" ? "text-orange-600" : ""
-              }
-            >
-              Profile
-            </Link>
-          </li>
-        </ul>
+            <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
+              <Link to="/login">
+                <PersonIcon
+                  fontSize="medium"
+                  className="text-white font-bold "
+                />
+              </Link>
+            </li>
+            <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
+              <Link to="/cartItems">
+                <ShoppingCartIcon
+                  fontSize="medium"
+                  className="text-white font-bold "
+                />
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { REACT_APP_HOST } from "../utils/Host_pass";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 const Login = () => {
   const [password, setPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -41,38 +43,64 @@ const Login = () => {
   //   getEmployeeById();
   // }, [users]);
   return (
-    <div className="mt-5  ">
-      <div className="mx-auto w-3/12">
-        <h1 className="text-black text-xl font-bold ml-32">Login</h1>
+    <div className="mt-24 text-center bg-gray-200 w-1/4 mx-auto h-[425px]">
+      <div>
+        <h1 className="text-black text-xl  pt-8 ">Login</h1>
 
-        <div className="mt-10">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
-            className="p-2 w-10/12 font-bold rounded-md"
-            style={{ border: "0.5px solid gray", Opacity: "0.1" }}
-          />
+        <div className="mt-2">
+          <Box
+            component="form"
+            sx={{ "& .MuiTextField-root": { m: 1, width: "32ch" } }}
+            noValidate
+          >
+            <TextField
+              id="outlined-textarea"
+              type="email"
+              label="Email "
+              name="email"
+              placeholder="Email"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+            />
+          </Box>
         </div>
-        <div className="mt-10">
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="p-2 w-10/12 font-bold rounded-md"
-            style={{ border: "0.5px solid gray", Opacity: "0.1" }}
-            placeholder="Password"
-          />
+        <div className="mt-4">
+          <Box
+            component="form"
+            sx={{ "& .MuiTextField-root": { m: 1, width: "32ch" } }}
+            noValidate
+          >
+            <TextField
+              id="outlined-password-input"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Box>
         </div>
-        <button
-          className="p-2 w-32 rounded-lg font-bold bg-[#eee5cf] text-[#ba373b] mt-10 text-center ml-24"
-          onClick={Login}
-        >
-          LOGIN
-        </button>
+        <div>
+          <button
+            className="p-2 w-[280px] rounded-sm  bg-[#ba373b] text-white mt-6 ml-1 text-center "
+            onClick={Login}
+          >
+            LOGIN
+          </button>
+        </div>
+
+        <div className="mt-6">
+          <h1 className="cursor-pointer">
+            Don't have an account?
+            <span className="text-[#f84260] ml-3 cursor-pointer">
+              REGISTER
+            </span>{" "}
+          </h1>
+          <h1 className="mt-6 text-[#f84260] cursor-pointer">
+            FORGOT PASSWORD
+          </h1>
+        </div>
       </div>
     </div>
   );
