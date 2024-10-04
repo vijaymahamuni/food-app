@@ -6,7 +6,7 @@ function Home() {
     <div>
       <img
         src={HomePage1}
-        className="object-none w-[100%] h-[650px]"
+        className="object-none w-[100%] h-[650px] brightness-[.60]"
         alt="Home Page"
       />
       <div className="absolute top-[330px] text-center left-[29%] text-white  ">

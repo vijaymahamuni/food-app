@@ -69,7 +69,7 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/login",
+        path: "/account/login",
         element: (
           <Suspense fallback={<Shimmer />}>
             <Login />
@@ -81,7 +81,7 @@ const appRouter = createBrowserRouter([
         element: <RestroMenucard />,
       },
       {
-        path: "/register",
+        path: "/account/register",
         element: <Register />,
       },
       {

@@ -3,10 +3,11 @@ const router = express.Router();
 const Registerdata = require("../models/RegisterUser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const auth = require("../middleware/auth");
 
 // Register Route
-router.post("/", async (req, res) => {
-  const { userName, userEmail, phoneNum, password } = req.body;
+router.post("/register", async (req, res) => {
+  const { userName, userEmail, typeofUsers, password } = req.body;
 
   try {
     // Check if the user already exists
@@ -23,7 +24,7 @@ router.post("/", async (req, res) => {
     const newUser = new Registerdata({
       userName,
       userEmail,
-      phoneNum,
+      typeofUsers,
       password: hashpassword,
     });
     await newUser.save();
@@ -41,13 +42,15 @@ router.post("/login", async (req, res) => {
     // Check if user exists
     const CheckUser = await Registerdata.findOne({ userEmail });
     if (!CheckUser) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res
+        .status(400)
+        .json({ message: "Invalid UserEmail Address credentials" });
     }
     // Compare passwords
     const isMatch = await bcrypt.compare(password, CheckUser.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid Passwords" });
     }
 
     //generate JWT token
@@ -65,30 +68,14 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 });
-// Middleware to protect routes
-const auth = (req, res, next) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
-  console.log("token", token);
 
-  if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
-  }
-
-  try {
-    const verified = jwt.verify(token, "r_d_g_m_a_v1112#");
-    req.user = verified.id;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Token is not valid" });
-  }
-};
-router.get("/", auth, async (req, res) => {
-  try {
-    const getUsers = await Registerdata.find();
-    res.json({ message: "This is a protected route", data: getUsers });
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching users" });
-  }
-});
+// router.get("/", auth, async (req, res) => {
+//   try {
+//     const getUsers = await Registerdata.find();
+//     res.json({ message: "This is a protected route", data: getUsers });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching users" });
+//   }
+// });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 // import { APP_LOGOIMG } from "../utils/constants";
 import { Link } from "react-router-dom";
 // import { useSelector } from "react-redux";
@@ -7,13 +7,48 @@ import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
 import foodie from "../images/Foodie.png";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 const Header = () => {
   // const [btnLogin, setBtnLogin] = useState("Logout");
   //Subscribing tot the store using a useSelector
   // const cartItem = useSelector((store) => store.cart.items);
   // console.log(cartItem)
   // const location = useLocation();
-  useEffect(() => {});
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
+  const [isRegisterVisible, setIsRegisterVisible] = useState(false);
+
+  const toggleLoginPopup = () => {
+    setIsLoginVisible(!isLoginVisible);
+    // window.history.pushState(null, "", "/account/login");
+    setIsRegisterVisible(false); // Ensure register modal is closed
+  };
+
+  const toggleRegisterPopup = () => {
+    setIsRegisterVisible(!isRegisterVisible);
+    // window.history.pushState(null, "", "/account/register");
+
+    setIsLoginVisible(false); // Ensure login modal is closed
+  };
+
+  const switchToRegister = () => {
+    setIsLoginVisible(false);
+    // window.history.pushState(null, "", "/account/register");
+
+    setIsRegisterVisible(true);
+  };
+
+  const switchToLogin = () => {
+    setIsRegisterVisible(false);
+    // window.history.pushState(null, "", "/account/login");
+
+    setIsLoginVisible(true);
+  };
+  // useEffect(() => {
+  //   if (isLoginVisible === false && isRegisterVisible === false) {
+  //     window.history.pushState(null, "", "/home");
+  //   }
+  // });
   const navigate = useNavigate();
 
   const handleHome = () => {
@@ -34,12 +69,13 @@ const Header = () => {
             </li>
 
             <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
-              <Link to="/login">
+              {/* <Link to="/account/login"> */}
+              <button onClick={toggleLoginPopup}>
                 <PersonIcon
                   fontSize="medium"
                   className="text-white font-bold "
                 />
-              </Link>
+              </button>
             </li>
             <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
               <Link to="/cartItems">
@@ -52,6 +88,20 @@ const Header = () => {
           </ul>
         </div>
       </div>
+      {/* Render the Login Popup Modal */}
+      {isLoginVisible && (
+        <Login
+          closePopup={toggleLoginPopup}
+          switchToRegister={switchToRegister}
+        />
+      )}
+
+      {isRegisterVisible && (
+        <Register
+          closePopup={toggleRegisterPopup}
+          switchToLogin={switchToLogin}
+        />
+      )}
     </div>
   );
 };

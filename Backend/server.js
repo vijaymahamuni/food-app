@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const connectDB = require("./config/db.js");
+const AddCustomer = require("./routes/RegisterPagedata.js");
 const foodRouter = require("./routes/foodRouter.js");
 // Initialize Express app
 const app = express();
@@ -17,28 +18,8 @@ app.use(
 connectDB();
 
 //Api End point
-app.use("/api/food", foodRouter);
-
-// mongoose
-//   .connect("mongodb://localhost:27017/foodApp", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("Connected to MongoDB"))
-//   .catch((err) => console.error(err));
-
-// mongodb+srv://Vijay:yajiV1112@cluster0.yhjhf.mongodb.net/?
-
-// const User = mongoose.model("User", UserSchema);
-
-// const userRoutes = require("./routes/LoginPagedata");
-// const RegisterRoutes = require("./routes/RegisterPagedata");
-
-// API route to handle POST request
-// app.use("/api/users", userRoutes);
-
-// app.use("/api/register_users", RegisterRoutes);
-// app.use("/api/login", RegisterRoutes);
+// app.use("/api/food", foodRouter);
+app.use("/api/food", AddCustomer);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

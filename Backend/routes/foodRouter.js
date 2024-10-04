@@ -1,7 +1,6 @@
 const express = require("express");
 const multer = require("multer");
 const addFood = require("../controllers/foodControler");
-
 const foodRouter = express.Router();
 
 // image Storage Engine
