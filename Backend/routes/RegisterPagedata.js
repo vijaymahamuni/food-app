@@ -63,19 +63,21 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token, userId: CheckUser._id });
+    res
+      .status(200)
+      .json({ token, userId: CheckUser._id, userEmail: CheckUser.userEmail });
   } catch (error) {
     res.status(500).json({ message: "server error" });
   }
 });
 
-// router.get("/", auth, async (req, res) => {
-//   try {
-//     const getUsers = await Registerdata.find();
-//     res.json({ message: "This is a protected route", data: getUsers });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error fetching users" });
-//   }
-// });
+router.get("/getcustomerList", auth, async (req, res) => {
+  try {
+    const getUsers = await Registerdata.find();
+    res.json({ message: "This is a protected route", data: getUsers });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users" });
+  }
+});
 
 module.exports = router;

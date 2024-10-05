@@ -15,22 +15,30 @@ import appStore from "./utils/appStore";
 import CartItems from "./components/CartItems";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Profile from "./components/Profile";
+// import Profile from "./components/Profile";
 import ItemsAdd from "./Admin/ItemsAdd";
 import Home from "./components/Home";
+import MyProfile from "./components/MyProfile/MyProfile";
+import Orders from "./components/MyProfile/Orders";
+import Favorites from "./components/MyProfile/Favorites";
+import ProtectedRoute from "./ProtectedRoute";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState(() => {
+    // On component mount, check for the token in localStorage
+    const storedUser = localStorage.getItem("userName");
+    return storedUser || "Vijay";
+  });
+
   useEffect(() => {
-    const data = {
-      name: "Vijay",
-    };
-    setUserName(data.name);
-  }, []);
+    if (userName) {
+      localStorage.setItem("userName", userName);
+    }
+  }, [userName]);
   return (
     <Provider store={appStore}>
-      <UserContext.Provider value={{ loggedInuser: userName }}>
+      <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
         <div className="App">
           <Header />
           <Outlet />
@@ -85,8 +93,22 @@ const appRouter = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/profile",
-        element: <Profile />,
+        path: "/my-profile",
+        element: (
+          <ProtectedRoute>
+            <MyProfile />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: "/my-profile/orders",
+            element: <Orders />,
+          },
+          {
+            path: "/my-profile/favorites",
+            element: <Favorites />,
+          },
+        ],
       },
       {
         path: "/addItems",

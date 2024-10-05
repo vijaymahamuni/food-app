@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import foodie from "../images/Foodie.png";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import UserContext from "../utils/UserContext";
+import { useContext } from "react";
+import MailIcon from "@mui/icons-material/Mail";
 const Header = () => {
   // const [btnLogin, setBtnLogin] = useState("Logout");
   //Subscribing tot the store using a useSelector
@@ -52,9 +55,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleHome = () => {
-    navigate("/");
+    navigate("/home");
   };
-
+  const { loggedInUser } = useContext(UserContext);
+  const customer_Profile = () => {
+    navigate("/my-profile");
+  };
   return (
     <div className=" h-[70px]  bg-[#f84260] items-center">
       <div className="flex  w-11/12 mx-auto justify-between ">
@@ -70,11 +76,23 @@ const Header = () => {
 
             <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
               {/* <Link to="/account/login"> */}
-              <button onClick={toggleLoginPopup}>
-                <PersonIcon
-                  fontSize="medium"
-                  className="text-white font-bold "
-                />
+              <button
+                onClick={
+                  loggedInUser === "Vijay" ? toggleLoginPopup : customer_Profile
+                }
+              >
+                {loggedInUser === "Vijay" ? (
+                  <PersonIcon
+                    fontSize="medium"
+                    className="text-white font-bold "
+                  />
+                ) : (
+                  <MailIcon
+                    fontSize="medium"
+                    className="text-white font-bold "
+                  />
+                )}
+                {/* <h1>{loggedInUser}</h1> */}
               </button>
             </li>
             <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">

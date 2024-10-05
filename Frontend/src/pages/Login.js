@@ -3,12 +3,17 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { REACT_APP_HOST } from "../utils/Host_pass";
+import UserContext from "../utils/UserContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 const Login = ({ closePopup, switchToRegister }) => {
   const [password, setPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const navigate = useNavigate();
 
+  const { setUserName } = useContext(UserContext);
   const Login = async (e) => {
     e.preventDefault();
     try {
@@ -18,12 +23,17 @@ const Login = ({ closePopup, switchToRegister }) => {
       });
       console.log("get Result data:", response.data.token);
       localStorage.setItem("token", response.data.token); // Store JWT
+      localStorage.setItem("userEmail", response.data.userEmail); // Store JWT
+
+      setUserName(response.data.userEmail);
+      navigate("/my-profile");
+      closePopup();
     } catch (error) {
       console.error(error);
     }
 
-    // setUserEmail("");
-    // setPassword("");
+    setUserEmail("");
+    setPassword("");
   };
 
   return (
