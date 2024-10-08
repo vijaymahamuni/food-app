@@ -22,13 +22,14 @@ import MyProfile from "./components/MyProfile/MyProfile";
 import Orders from "./components/MyProfile/Orders";
 import Favorites from "./components/MyProfile/Favorites";
 import ProtectedRoute from "./ProtectedRoute";
+import AddRestaurant from "./Admin/AddRestaurant";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
   const [userName, setUserName] = useState(() => {
     // On component mount, check for the token in localStorage
     const storedUser = localStorage.getItem("userName");
-    return storedUser || "Vijay";
+    return storedUser || "Guest";
   });
 
   useEffect(() => {
@@ -110,6 +111,7 @@ const appRouter = createBrowserRouter([
           },
         ],
       },
+
       {
         path: "/addItems",
         element: <ItemsAdd />,
@@ -117,6 +119,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/home",
         element: <Home />,
+      },
+      {
+        path: "/admin/restaurant",
+        element: <AddRestaurant />,
       },
     ],
   },

@@ -21,11 +21,12 @@ const Login = ({ closePopup, switchToRegister }) => {
         userEmail,
         password,
       });
-      console.log("get Result data:", response.data.token);
+      console.log("get Result data:", response.data);
       localStorage.setItem("token", response.data.token); // Store JWT
       localStorage.setItem("userEmail", response.data.userEmail); // Store JWT
+      localStorage.setItem("userName", response.data.userName); // Store JWT
 
-      setUserName(response.data.userEmail);
+      setUserName(response.data.userName);
       navigate("/my-profile");
       closePopup();
     } catch (error) {

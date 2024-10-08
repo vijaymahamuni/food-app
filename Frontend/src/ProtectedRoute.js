@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoute = ({ children }) => {
   const { loggedInUser } = useContext(UserContext);
 
-  if (!loggedInUser || loggedInUser === "Vijay") {
+  if (!loggedInUser || loggedInUser === "Guest") {
     return <Navigate path="/home" />;
   }
 

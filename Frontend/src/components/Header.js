@@ -11,7 +11,9 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
-import MailIcon from "@mui/icons-material/Mail";
+import Avatar from "@mui/material/Avatar";
+// import Stack from "@mui/material/Stack";
+// import { deepOrange, deepPurple } from "@mui/material/colors";
 const Header = () => {
   // const [btnLogin, setBtnLogin] = useState("Logout");
   //Subscribing tot the store using a useSelector
@@ -58,6 +60,8 @@ const Header = () => {
     navigate("/home");
   };
   const { loggedInUser } = useContext(UserContext);
+  // console.log(loggedInUser.charAt(0));
+  let ProfileAvatar = loggedInUser.charAt(0);
   const customer_Profile = () => {
     navigate("/my-profile");
   };
@@ -78,20 +82,28 @@ const Header = () => {
               {/* <Link to="/account/login"> */}
               <button
                 onClick={
-                  loggedInUser === "Vijay" ? toggleLoginPopup : customer_Profile
+                  loggedInUser === "Guest" ? toggleLoginPopup : customer_Profile
                 }
               >
-                {loggedInUser === "Vijay" ? (
-                  <PersonIcon
-                    fontSize="medium"
-                    className="text-white font-bold "
-                  />
-                ) : (
-                  <MailIcon
-                    fontSize="medium"
-                    className="text-white font-bold "
-                  />
-                )}
+                <div className="-mt-1">
+                  {loggedInUser === "Guest" ? (
+                    <PersonIcon
+                      fontSize="medium"
+                      className="text-white font-bold "
+                    />
+                  ) : (
+                    <Avatar sx={{ bgcolor: "white", color: "black" }}>
+                      {ProfileAvatar}
+                    </Avatar>
+                    // <Avatar
+                    //   src="/broken-image.jpg"
+                    //   sx={{ bgcolor: "white", color: "black" }}
+                    // />
+                  )}
+
+                  {/* <h1 className="ml-2 text-white">{loggedInUser}</h1> */}
+                </div>
+
                 {/* <h1>{loggedInUser}</h1> */}
               </button>
             </li>
