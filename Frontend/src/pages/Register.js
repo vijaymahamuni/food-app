@@ -7,12 +7,14 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useNavigate } from "react-router-dom";
+import Login from "./Login";
 const Register = ({ closePopup, switchToLogin }) => {
   const [userName, setUserName] = useState();
   const [userEmail, setUserEmail] = useState();
   const [password, setPassword] = useState();
   const [typeofUsers, setTypeofUsers] = useState("customer");
-
+  const navigate = useNavigate();
   const Register = async (e) => {
     e.preventDefault();
     try {
@@ -23,6 +25,9 @@ const Register = ({ closePopup, switchToLogin }) => {
         typeofUsers,
       });
       console.log("User added:", response.data);
+      if (typeofUsers === "admin") {
+        navigate("/admin/addrestaurant");
+      }
       closePopup(); // Close popup after successful registration
     } catch (error) {
       console.error(error);

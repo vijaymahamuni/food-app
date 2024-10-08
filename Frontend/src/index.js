@@ -23,6 +23,8 @@ import Orders from "./components/MyProfile/Orders";
 import Favorites from "./components/MyProfile/Favorites";
 import ProtectedRoute from "./ProtectedRoute";
 import AddRestaurant from "./Admin/AddRestaurant";
+import AdminPanel from "./components/MyProfile/AdminPanel";
+import LogoutPage from "./components/MyProfile/LogoutPage";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -94,6 +96,20 @@ const appRouter = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: "/admin/restaurant",
+        element: (
+          <ProtectedRoute>
+            <AdminPanel />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: "/admin/restaurant/logout",
+            element: <LogoutPage />,
+          },
+        ],
+      },
+      {
         path: "/my-profile",
         element: (
           <ProtectedRoute>
@@ -109,6 +125,10 @@ const appRouter = createBrowserRouter([
             path: "/my-profile/favorites",
             element: <Favorites />,
           },
+          {
+            path: "/my-profile/logout",
+            element: <LogoutPage />,
+          },
         ],
       },
 
@@ -121,7 +141,7 @@ const appRouter = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/admin/restaurant",
+        path: "/admin/addrestaurant",
         element: <AddRestaurant />,
       },
     ],

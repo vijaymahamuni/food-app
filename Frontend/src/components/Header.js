@@ -12,6 +12,7 @@ import Register from "../pages/Register";
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
+
 // import Stack from "@mui/material/Stack";
 // import { deepOrange, deepPurple } from "@mui/material/colors";
 const Header = () => {
@@ -62,8 +63,13 @@ const Header = () => {
   const { loggedInUser } = useContext(UserContext);
   // console.log(loggedInUser.charAt(0));
   let ProfileAvatar = loggedInUser.charAt(0);
+  let getUserType = localStorage.getItem("admin");
   const customer_Profile = () => {
-    navigate("/my-profile");
+    if (getUserType === "admin") {
+      navigate("/admin/restaurant");
+    } else {
+      navigate("/my-profile");
+    }
   };
   return (
     <div className=" h-[70px]  bg-[#f84260] items-center">

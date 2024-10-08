@@ -25,9 +25,14 @@ const Login = ({ closePopup, switchToRegister }) => {
       localStorage.setItem("token", response.data.token); // Store JWT
       localStorage.setItem("userEmail", response.data.userEmail); // Store JWT
       localStorage.setItem("userName", response.data.userName); // Store JWT
+      localStorage.setItem("admin", response.data.typeofUsers); // Store JWT
 
       setUserName(response.data.userName);
-      navigate("/my-profile");
+      if (response.data.typeofUsers === "admin") {
+        navigate("/admin/restaurant");
+      } else {
+        navigate("/my-profile");
+      }
       closePopup();
     } catch (error) {
       console.error(error);

@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import HomeIcon from "@mui/icons-material/Home";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import EventIcon from "@mui/icons-material/Event";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Orders from "./Orders";
+import { Navigate, useNavigate } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShopIcon from "@mui/icons-material/Shop";
+import CategoryIcon from "@mui/icons-material/Category";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
+import EventIcon from "@mui/icons-material/Event";
+import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import LogoutPage from "./LogoutPage";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import Favorites from "./Favorites";
-function MyProfile() {
+function AdminPanel() {
   const [open, setOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(false);
+
   const Menus = [
+    { title: "Dashboard", src: <DashboardIcon /> },
     { title: "Orders", src: <ShoppingBagIcon /> },
-    { title: "Favorites", src: <FavoriteIcon /> },
-    { title: "Address", src: <HomeIcon /> },
-    { title: "Payments", src: <AccountBalanceWalletIcon /> },
-    { title: "Notification", src: <NotificationsNoneIcon /> },
+    { title: "Menu", src: <ShopIcon /> },
+    { title: "Food Category", src: <CategoryIcon /> },
+    { title: "Ingredients", src: <FastfoodIcon /> },
     { title: "Events", src: <EventIcon /> },
+    { title: "Details", src: <PrivacyTipIcon /> },
     { title: "Logout", src: <LogoutIcon /> },
   ];
   const navigate = useNavigate();
@@ -58,22 +59,9 @@ function MyProfile() {
         </ul>
       </div>
       <div className="p-7  flex-1 h-screen">
-        {/* {selectedMenu === "Orders" && <div>{handleFavourites()}</div>} */}
-        {selectedMenu === "Orders" && (
-          <>
-            <Navigate to="/my-profile/orders" />
-            <Orders />
-          </>
-        )}
-        {selectedMenu === "Favorites" && (
-          <>
-            <Navigate to="/my-profile/favorites" />
-            <Favorites />
-          </>
-        )}
         {selectedMenu === "Logout" && (
           <>
-            <Navigate to="/my-profile/logout" />
+            <Navigate to="/admin/restaurant/logout" />
             <LogoutPage />
           </>
         )}
@@ -82,4 +70,4 @@ function MyProfile() {
   );
 }
 
-export default MyProfile;
+export default AdminPanel;
