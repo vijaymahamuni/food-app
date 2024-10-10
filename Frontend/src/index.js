@@ -25,6 +25,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import AddRestaurant from "./Admin/AddRestaurant";
 import AdminPanel from "./components/MyProfile/AdminPanel";
 import LogoutPage from "./components/MyProfile/LogoutPage";
+import Dashboard from "@mui/icons-material/Dashboard";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -107,6 +108,10 @@ const appRouter = createBrowserRouter([
             path: "/admin/restaurant/logout",
             element: <LogoutPage />,
           },
+          {
+            path: "/admin/restaurant/dashboard",
+            element: <Dashboard />,
+          },
         ],
       },
       {
@@ -141,7 +146,7 @@ const appRouter = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/admin/addrestaurant",
+        path: "admin/addrestaurant",
         element: <AddRestaurant />,
       },
     ],

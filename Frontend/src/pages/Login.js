@@ -23,9 +23,10 @@ const Login = ({ closePopup, switchToRegister }) => {
       });
       console.log("get Result data:", response.data);
       localStorage.setItem("token", response.data.token); // Store JWT
-      localStorage.setItem("userEmail", response.data.userEmail); // Store JWT
-      localStorage.setItem("userName", response.data.userName); // Store JWT
-      localStorage.setItem("admin", response.data.typeofUsers); // Store JWT
+      localStorage.setItem("userEmail", response.data.userEmail); // Store userEmail
+      localStorage.setItem("userName", response.data.userName); // Store userName
+      localStorage.setItem("admin", response.data.typeofUsers); // Store typeofUsers
+      localStorage.setItem("customerId", response.data.userId); // Store typeofUsers
 
       setUserName(response.data.userName);
       if (response.data.typeofUsers === "admin") {

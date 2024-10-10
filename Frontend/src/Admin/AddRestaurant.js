@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { REACT_APP_HOST } from "../utils/Host_pass";
 function AddRestaurant() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -26,6 +28,51 @@ function AddRestaurant() {
       setFile(URL.createObjectURL(e.target.files[0]));
     }
   };
+  const ownerId = localStorage.getItem("customerId");
+
+  const createRestaurant = async () => {
+    console.log(
+      name,
+      description,
+      cuisineType,
+      openingHours,
+      streetAddress,
+      city,
+      state,
+      postalCode,
+      country,
+      emailid,
+      mobileno,
+      twitter,
+      instagram,
+      ownerId
+    );
+    try {
+      const reqSend = await axios.post(
+        `${REACT_APP_HOST}/api/owner/addrestaurant`,
+        {
+          name,
+          description,
+          cuisineType,
+          openingHours,
+          streetAddress,
+          city,
+          state,
+          postalCode,
+          country,
+          emailid,
+          mobileno,
+          twitter,
+          instagram,
+          file,
+          ownerId,
+        }
+      );
+      console.log("reqSend", reqSend.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="w-7/12  mx-auto">
       <h1 className="pt-6 font-bold text-2xl text-center">
@@ -48,6 +95,7 @@ function AddRestaurant() {
             <img
               src={file}
               alt="selectedfile"
+              name="image"
               className="w-20 h-20 mt-[12px] ml-4 rounded-sm"
             />
           </div>
@@ -310,7 +358,10 @@ function AddRestaurant() {
           </Box>
         </div>
       </div>
-      <button className="p-2 rounded-sm w-44 m-2 text-white text-center bg-[#f84260]">
+      <button
+        className="p-2 rounded-sm w-44 m-2 text-white text-center bg-[#f84260]"
+        onClick={createRestaurant}
+      >
         CREATE RESTAURANT
       </button>
     </div>

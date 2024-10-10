@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HomePage1 from "../images/Home_page1.jpg";
 import biriyani_img1 from "../images/biriyani.jpg";
+import axios from "axios";
+import { REACT_APP_HOST } from "../utils/Host_pass";
 function Home() {
+  const [restaurantList, setRestaurantList] = useState([]);
+  const fetchData = async () => {
+    const resData = await axios.get(
+      `${REACT_APP_HOST}/api/owner/getRestroList`
+    );
+    // console.log("getList of Restro", resData.data.data);
+    setRestaurantList(resData.data.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div>
       <img
@@ -57,9 +70,18 @@ function Home() {
       </div>
       <div className=" w-11/12 mx-auto p-4">
         <h1 className="text-2xl text-gray-500">
-          {" "}
           Top restaurant chains in Chennai
         </h1>
+        {restaurantList && restaurantList.length > 0 ? (
+          restaurantList.map((item, index) => (
+            <div key={index}>
+              <h1>{item.name}</h1>
+              <img src={item.file} alt="error" />
+            </div>
+          ))
+        ) : (
+          <p>No restaurants available</p>
+        )}
       </div>
     </div>
   );

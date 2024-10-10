@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShopIcon from "@mui/icons-material/Shop";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -10,6 +10,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import EventIcon from "@mui/icons-material/Event";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import LogoutPage from "./LogoutPage";
+import Dashboard from "./Dashboard";
 function AdminPanel() {
   const [open, setOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(false);
@@ -24,7 +25,7 @@ function AdminPanel() {
     { title: "Details", src: <PrivacyTipIcon /> },
     { title: "Logout", src: <LogoutIcon /> },
   ];
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const handleFavourites = () => {
   //   navigate("/my-profile/Orders");
   // };
@@ -63,6 +64,12 @@ function AdminPanel() {
           <>
             <Navigate to="/admin/restaurant/logout" />
             <LogoutPage />
+          </>
+        )}
+        {selectedMenu === "Dashboard" && (
+          <>
+            <Navigate to="/admin/restaurant/dashboard" />
+            <Dashboard />
           </>
         )}
       </div>

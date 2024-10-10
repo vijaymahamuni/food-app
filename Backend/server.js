@@ -4,6 +4,8 @@ const cors = require("cors");
 const connectDB = require("./config/db.js");
 const AddCustomer = require("./routes/RegisterPagedata.js");
 const foodRouter = require("./routes/foodRouter.js");
+// const AddRestaurant = require("./routes/AddRestaurant.js");
+const AddnewRestro = require("./routes/AddRestaurant.js");
 // Initialize Express app
 const app = express();
 app.use(express.json());
@@ -20,6 +22,9 @@ connectDB();
 //Api End point
 // app.use("/api/food", foodRouter);
 app.use("/api/food", AddCustomer);
+
+//addRestaurant
+app.use("/api/owner", AddnewRestro);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
