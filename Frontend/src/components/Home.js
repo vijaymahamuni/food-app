@@ -9,7 +9,7 @@ function Home() {
     const resData = await axios.get(
       `${REACT_APP_HOST}/api/owner/getRestroList`
     );
-    // console.log("getList of Restro", resData.data.data);
+    console.log("getList of Restro", resData.data.data);
     setRestaurantList(resData.data.data);
   };
   useEffect(() => {
@@ -75,8 +75,12 @@ function Home() {
         {restaurantList && restaurantList.length > 0 ? (
           restaurantList.map((item, index) => (
             <div key={index}>
-              <h1>{item.name}</h1>
-              <img src={item.file} alt="error" />
+              <h1>{item._id}</h1>
+              <img
+                src={`http://localhost:5000/` + item.file}
+                alt="img"
+                style={{ width: "200px", height: "auto" }}
+              />
             </div>
           ))
         ) : (

@@ -20,53 +20,38 @@ function AddRestaurant() {
   const [mobileno, setMobileno] = useState("");
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
-  const [file, setFile] = useState();
+  const [image, setImage] = useState();
 
   const handleChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files);
-      setFile(URL.createObjectURL(e.target.files[0]));
-    }
+    // console.log(e.target.files);
+    // setFile(URL.createObjectURL(e.target.files[0]));
+    setImage(e.target.files[0]);
   };
   const ownerId = localStorage.getItem("customerId");
 
   const createRestaurant = async () => {
-    console.log(
-      name,
-      description,
-      cuisineType,
-      openingHours,
-      streetAddress,
-      city,
-      state,
-      postalCode,
-      country,
-      emailid,
-      mobileno,
-      twitter,
-      instagram,
-      ownerId
-    );
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("cuisineType", cuisineType);
+    formData.append("openingHours", openingHours);
+    formData.append("streetAddress", streetAddress);
+    formData.append("city", city);
+    formData.append("state", state);
+    formData.append("postalCode", postalCode);
+    formData.append("country", country);
+    formData.append("emailid", emailid);
+    formData.append("mobileno", mobileno);
+    formData.append("twitter", twitter);
+    formData.append("instagram", instagram);
+    formData.append("ownerId", ownerId);
+    formData.append("image", image);
+    console.log("formData", formData);
+
     try {
       const reqSend = await axios.post(
         `${REACT_APP_HOST}/api/owner/addrestaurant`,
-        {
-          name,
-          description,
-          cuisineType,
-          openingHours,
-          streetAddress,
-          city,
-          state,
-          postalCode,
-          country,
-          emailid,
-          mobileno,
-          twitter,
-          instagram,
-          file,
-          ownerId,
-        }
+        formData
       );
       console.log("reqSend", reqSend.data);
     } catch (error) {
@@ -90,10 +75,10 @@ function AddRestaurant() {
             <AddPhotoAlternateIcon />
           </label>
         </div>
-        {file && (
+        {image && (
           <div>
             <img
-              src={file}
+              src={image}
               alt="selectedfile"
               name="image"
               className="w-20 h-20 mt-[12px] ml-4 rounded-sm"

@@ -2,22 +2,33 @@ const express = require("express");
 const AddnewRestro = express.Router();
 const AddRestroData = require("../models/addDetailsModel");
 const multer = require("multer");
-const cloudinary = require("../config/cloudinary");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
 // Multer storage config for Cloudinary
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "uploads", // Cloudinary folder name
-    allowed_formats: ["jpeg", "png", "jpg"],
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: "uploads", // Cloudinary folder name
+//     allowed_formats: ["jpeg", "png", "jpg"],
+//   },
+// });
+// Set up Multer storage and file handling
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + file.originalname); // Set file name as timestamp
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
+
 AddnewRestro.post(
   "/addrestaurant",
   upload.single("image"),
   async (req, res) => {
+    console.log(req.file.filename);
+    const ImageFile = req.file.filename;
     const {
       name,
       description,
@@ -32,7 +43,6 @@ AddnewRestro.post(
       mobileno,
       twitter,
       instagram,
-      file,
       ownerId,
     } = req.body;
     try {
@@ -50,7 +60,7 @@ AddnewRestro.post(
         mobileno,
         twitter,
         instagram,
-        file,
+        file: ImageFile,
         ownerId,
       });
       await AddnewRestro.save();
