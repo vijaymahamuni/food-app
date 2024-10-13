@@ -114,7 +114,7 @@ const Header = () => {
               </button>
             </li>
             <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
-              <Link to="/cartItems">
+              <Link to="/cart">
                 <ShoppingCartIcon
                   fontSize="medium"
                   className="text-white font-bold "

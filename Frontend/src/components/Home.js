@@ -5,6 +5,7 @@ import axios from "axios";
 import { REACT_APP_HOST } from "../utils/Host_pass";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
+import Shimmer from "./Shimmer";
 function Home() {
   const [restaurantList, setRestaurantList] = useState([]);
   const fetchData = async () => {
@@ -106,7 +107,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p>No restaurants available</p>
+            <Shimmer />
           )}
         </div>
       </div>
