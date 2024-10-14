@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,7 +9,18 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import axios from "axios";
+import { REACT_APP_HOST } from "../../utils/Host_pass";
 function RestroMenus() {
+  const [menuList, setMenuList] = useState([]);
+  const fetchData = async () => {
+    const resData = await axios.get(`${REACT_APP_HOST}/api/menu/getMenulist`);
+    console.log("getList of menu", resData.data.data);
+    setMenuList(resData.data.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className=" w-11/12 mx-auto flex">
       <div className="mt-4 w-[18%] bg-gray-50 p-6">
@@ -167,17 +178,29 @@ function RestroMenus() {
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            <Typography>
-              <h1>Burger</h1>
-              <h1>Rs.300</h1>
-              <h1>4.3 star</h1>
-            </Typography>
+            {menuList.map((item, index) => (
+              <Typography key={index} className="flex p-1">
+                <div className="mt-2">
+                  <img
+                    src={`http://localhost:5000/` + item.file}
+                    alt="menuImg"
+                    className="w-28 h-28 rounded-lg"
+                  />
+                </div>
+                <div className="ml-4">
+                  <h1 className="text-lg font-bold">{item.name}</h1>
+                  <h1 className="mt-2 font-extralight">₹{item.price}</h1>
+                  <h1 className="mt-2">{item.description}</h1>
+                  <h1 className="mt-2">★4.3</h1>
+                </div>
+              </Typography>
+            ))}
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
+              <button className="p-1 font-thin rounded-sm text-sm bg-[#f84260] w-32 text-white">
+                ADD TO CART
+              </button>
             </Typography>
           </AccordionDetails>
         </Accordion>

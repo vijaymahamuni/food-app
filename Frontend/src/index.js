@@ -28,6 +28,7 @@ import LogoutPage from "./components/MyProfile/LogoutPage";
 import Dashboard from "@mui/icons-material/Dashboard";
 import RestroMenus from "./components/RestaurantMenu.js/RestroMenus";
 import AddCartItems from "./components/RestaurantMenu.js/AddCartItems";
+import AddMenuItem from "./Admin/AddMenuItem";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -117,6 +118,10 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin/restaurant/dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "/admin/restaurant/add-menu",
+            element: <AddMenuItem />,
           },
         ],
       },

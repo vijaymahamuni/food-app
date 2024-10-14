@@ -11,6 +11,7 @@ import EventIcon from "@mui/icons-material/Event";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import LogoutPage from "./LogoutPage";
 import Dashboard from "./Dashboard";
+import AddMenuItem from "../../Admin/AddMenuItem";
 function AdminPanel() {
   const [open, setOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(false);
@@ -70,6 +71,12 @@ function AdminPanel() {
           <>
             <Navigate to="/admin/restaurant/dashboard" />
             <Dashboard />
+          </>
+        )}
+        {selectedMenu === "Menu" && (
+          <>
+            <Navigate to="/admin/restaurant/add-menu" />
+            <AddMenuItem />
           </>
         )}
       </div>
