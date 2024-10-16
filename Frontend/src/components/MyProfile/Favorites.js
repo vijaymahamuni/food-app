@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
 
 const Favorites = () => {
-  const [customerList, setCustomerList] = useState([]);
+  // const [customerList, setCustomerList] = useState([]);
   // Function to fetch users
 
   const fetchData = async () => {

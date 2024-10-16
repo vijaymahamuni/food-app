@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -22,7 +22,6 @@ const AddMenuItem = () => {
   };
 
   const ownerId = localStorage.getItem("customerId");
-  const restaurantId = "67094f8b70e64fd06f768105";
 
   const AddMenuItem = async () => {
     const formData = new FormData();
@@ -47,6 +46,20 @@ const AddMenuItem = () => {
       console.log(error);
     }
   };
+  const [restaurantId, setRestaurantId] = useState();
+  const fetchData = async () => {
+    const checkUser_Restro = await axios.post(
+      `${REACT_APP_HOST}/api/owner/checkOwner`,
+      {
+        ownerId,
+      }
+    );
+    console.log("getList of Restro", checkUser_Restro.data.data._id);
+    setRestaurantId(checkUser_Restro.data.data._id);
+  };
+  useEffect(() => {
+    fetchData();
+  });
 
   return (
     <div className="w-5/6 mx-auto">

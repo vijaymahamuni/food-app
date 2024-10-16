@@ -23,8 +23,55 @@ function RestroMenus() {
   }, []);
   return (
     <div className=" w-11/12 mx-auto flex">
-      <div className="mt-4 w-[18%] bg-gray-50 p-6">
+      <div className="mt-4 w-[20%] bg-gray-50 p-6">
         <div>
+          <FormControl>
+            <FormLabel
+              id="demo-radio-buttons-group-label"
+              style={{
+                fontSize: "18px",
+                color: "black",
+                fontWeight: "bold",
+              }}
+            >
+              Filters
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="all"
+              name="radio-buttons-group"
+              className="mt-3 border-b-2"
+            >
+              <FormControlLabel
+                value="toprated"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#f84260", // Checked color
+                      },
+                    }}
+                  />
+                }
+                label="TopRated Item"
+              />
+              <FormControlLabel
+                value="above 400"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#f84260", // Checked color
+                      },
+                    }}
+                  />
+                }
+                label="Above 400"
+              />
+            </RadioGroup>
+          </FormControl>
+        </div>
+        <div className="mt-4">
           <FormControl>
             <FormLabel
               id="demo-radio-buttons-group-label"
@@ -171,15 +218,15 @@ function RestroMenus() {
           </FormControl>
         </div>
       </div>
-      <div className="w-10/12 p-5">
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            {menuList.map((item, index) => (
-              <Typography key={index} className="flex p-1">
+      <div className="w-9/12 pl-10">
+        {menuList.map((item, index) => (
+          <Accordion key={index} className="mt-4">
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography className="flex p-1">
                 <div className="mt-2">
                   <img
                     src={`http://localhost:5000/` + item.file}
@@ -194,16 +241,16 @@ function RestroMenus() {
                   <h1 className="mt-2">★4.3</h1>
                 </div>
               </Typography>
-            ))}
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              <button className="p-1 font-thin rounded-sm text-sm bg-[#f84260] w-32 text-white">
-                ADD TO CART
-              </button>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                <button className="p-1 font-thin rounded-sm text-sm bg-[#f84260] w-32 text-white">
+                  ADD TO CART
+                </button>
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
       </div>
     </div>
   );

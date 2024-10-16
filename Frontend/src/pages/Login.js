@@ -6,6 +6,7 @@ import { REACT_APP_HOST } from "../utils/Host_pass";
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 // import { useNavigate } from "react-router-dom";
 
 const Login = ({ closePopup, switchToRegister }) => {
@@ -16,29 +17,48 @@ const Login = ({ closePopup, switchToRegister }) => {
   const { setUserName } = useContext(UserContext);
   const Login = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post(`${REACT_APP_HOST}/api/food/login`, {
+      const { data } = await axios.post(`${REACT_APP_HOST}/api/food/login`, {
         userEmail,
         password,
       });
-      console.log("get Result data:", response.data);
-      localStorage.setItem("token", response.data.token); // Store JWT
-      localStorage.setItem("userEmail", response.data.userEmail); // Store userEmail
-      localStorage.setItem("userName", response.data.userName); // Store userName
-      localStorage.setItem("admin", response.data.typeofUsers); // Store typeofUsers
-      localStorage.setItem("customerId", response.data.userId); // Store typeofUsers
 
-      setUserName(response.data.userName);
-      if (response.data.typeofUsers === "admin") {
-        navigate("/admin/restaurant");
+      const { token, userEmail: email, userName, typeofUsers, userId } = data;
+
+      //Set data in localStorage only once
+      localStorage.setItem("token", token);
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("admin", typeofUsers);
+      localStorage.setItem("customerId", userId);
+
+      setUserName(userName);
+
+      // Check if user is an admin
+      if (typeofUsers === "admin") {
+        // If admin, check if they are an owner
+        const checkUser_Restro = await axios.post(
+          `${REACT_APP_HOST}/api/owner/checkOwner`,
+          {
+            ownerId: userId,
+          }
+        );
+
+        if (checkUser_Restro.status === 200) {
+          navigate("/admin/addrestaurant");
+        } else if (checkUser_Restro.status === 201) {
+          navigate("/admin/restaurant");
+        }
       } else {
         navigate("/my-profile");
       }
+
       closePopup();
     } catch (error) {
-      console.error(error);
+      // Improved error handling
+      console.error("Login Error:", error);
     }
-
     setUserEmail("");
     setPassword("");
   };

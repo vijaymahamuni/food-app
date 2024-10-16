@@ -7,14 +7,18 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useNavigate } from "react-router-dom";
-import Login from "./Login";
+// import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+// import Login from "./Login";
 const Register = ({ closePopup, switchToLogin }) => {
   const [userName, setUserName] = useState();
   const [userEmail, setUserEmail] = useState();
   const [password, setPassword] = useState();
   const [typeofUsers, setTypeofUsers] = useState("customer");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
+
   const Register = async (e) => {
     e.preventDefault();
     try {
@@ -25,9 +29,16 @@ const Register = ({ closePopup, switchToLogin }) => {
         typeofUsers,
       });
       console.log("User added:", response.data);
-      if (typeofUsers === "admin") {
-        navigate("/admin/addrestaurant");
+      if (response.status === 200) {
+        MySwal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Registration successful! Please log in to access your account.",
+        });
       }
+      // if (typeofUsers === "admin") {
+      //   navigate("/admin/addrestaurant");
+      // }
       closePopup(); // Close popup after successful registration
     } catch (error) {
       console.error(error);
@@ -111,7 +122,7 @@ const Register = ({ closePopup, switchToLogin }) => {
                 inputProps={{ "aria-label": "Without label" }}
               >
                 <MenuItem value={"customer"}>Customer</MenuItem>
-                <MenuItem value={"admin"}>Admin</MenuItem>
+                <MenuItem value={"admin"}>Restaurant Owner</MenuItem>
               </Select>
             </FormControl>
           </div>

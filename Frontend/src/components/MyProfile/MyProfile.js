@@ -9,7 +9,7 @@ import EventIcon from "@mui/icons-material/Event";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Orders from "./Orders";
 import LogoutPage from "./LogoutPage";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Favorites from "./Favorites";
 function MyProfile() {
   const [open, setOpen] = useState(false);
@@ -23,7 +23,7 @@ function MyProfile() {
     { title: "Events", src: <EventIcon /> },
     { title: "Logout", src: <LogoutIcon /> },
   ];
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const handleFavourites = () => {
   //   navigate("/my-profile/Orders");
   // };

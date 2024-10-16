@@ -81,4 +81,24 @@ AddnewRestro.get("/getRestroList", async (req, res) => {
   }
 });
 
+AddnewRestro.post("/checkOwner", async (req, res) => {
+  const ownerId = req.body.ownerId;
+
+  try {
+    // Check if userId exists
+    const existingUser = await AddRestroData.findOne({ ownerId: ownerId });
+
+    if (existingUser) {
+      return res
+        .status(201)
+        .json({ message: "UserId already exists.", data: existingUser });
+    } else {
+      return res
+        .status(200)
+        .json({ message: "UserId available.", data: existingUser });
+    }
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
 module.exports = AddnewRestro;
