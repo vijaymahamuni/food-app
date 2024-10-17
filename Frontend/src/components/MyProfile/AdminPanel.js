@@ -12,6 +12,8 @@ import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import LogoutPage from "./LogoutPage";
 import Dashboard from "./Dashboard";
 import AddMenuItem from "../../Admin/AddMenuItem";
+import AllMenuItems from "../../Admin/AllMenuItems";
+import RestroDetails from "../../Admin/RestroDetails";
 function AdminPanel() {
   const [open, setOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(false);
@@ -21,7 +23,7 @@ function AdminPanel() {
     { title: "Orders", src: <ShoppingBagIcon /> },
     { title: "Menu", src: <ShopIcon /> },
     { title: "Food Category", src: <CategoryIcon /> },
-    { title: "Ingredients", src: <FastfoodIcon /> },
+    // { title: "Ingredients", src: <FastfoodIcon /> },
     { title: "Events", src: <EventIcon /> },
     { title: "Details", src: <PrivacyTipIcon /> },
     { title: "Logout", src: <LogoutIcon /> },
@@ -62,22 +64,28 @@ function AdminPanel() {
       </div>
       <div className="p-7  flex-1 h-screen">
         {selectedMenu === "Logout" && (
-          <>
+          <div>
             <Navigate to="/admin/restaurant/logout" />
             <LogoutPage />
-          </>
+          </div>
         )}
         {selectedMenu === "Dashboard" && (
-          <>
+          <div>
             <Navigate to="/admin/restaurant/dashboard" />
             <Dashboard />
-          </>
+          </div>
         )}
         {selectedMenu === "Menu" && (
-          <>
-            <Navigate to="/admin/restaurant/add-menu" />
-            <AddMenuItem />
-          </>
+          <div>
+            <Navigate to="/admin/restaurant/menu" />
+            <AllMenuItems />
+          </div>
+        )}
+        {selectedMenu === "Details" && (
+          <div>
+            <Navigate to="/admin/restaurant/details" />
+            <RestroDetails />
+          </div>
         )}
       </div>
     </div>

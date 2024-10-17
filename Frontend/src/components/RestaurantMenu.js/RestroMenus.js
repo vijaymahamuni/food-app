@@ -11,10 +11,16 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
+import { useParams } from "react-router-dom";
 function RestroMenus() {
   const [menuList, setMenuList] = useState([]);
+  const { resId } = useParams();
+  console.log("resID", resId);
+
   const fetchData = async () => {
-    const resData = await axios.get(`${REACT_APP_HOST}/api/menu/getMenulist`);
+    const resData = await axios.get(
+      `${REACT_APP_HOST}/api/menu/getMenulist/${resId}`
+    );
     console.log("getList of menu", resData.data.data);
     setMenuList(resData.data.data);
   };

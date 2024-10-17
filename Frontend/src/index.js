@@ -29,6 +29,8 @@ import Dashboard from "@mui/icons-material/Dashboard";
 import RestroMenus from "./components/RestaurantMenu.js/RestroMenus";
 import AddCartItems from "./components/RestaurantMenu.js/AddCartItems";
 import AddMenuItem from "./Admin/AddMenuItem";
+import AllMenuItems from "./Admin/AllMenuItems";
+import RestroDetails from "./Admin/RestroDetails";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -123,6 +125,14 @@ const appRouter = createBrowserRouter([
             path: "/admin/restaurant/add-menu",
             element: <AddMenuItem />,
           },
+          {
+            path: "/admin/restaurant/menu",
+            element: <AllMenuItems />,
+          },
+          {
+            path: "/admin/restaurant/details",
+            element: <RestroDetails />,
+          },
         ],
       },
       {
@@ -157,7 +167,7 @@ const appRouter = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/restaurant",
+        path: "/restaurantmenu/:resId",
         element: <RestroMenus />,
       },
       {

@@ -72,9 +72,22 @@ AddnewRestro.post(
     }
   }
 );
+//get Restaurant list for Home page display restrolistout
 AddnewRestro.get("/getRestroList", async (req, res) => {
   try {
     const getRestaurantList = await AddRestroData.find();
+    res.json({ message: "Received List", data: getRestaurantList });
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+//get Restaurant data for Restro Details Disply in Profile
+AddnewRestro.get("/getRestrodata/:ownerId", async (req, res) => {
+  const ownerId = req.params.ownerId;
+  console.log(ownerId);
+  try {
+    const getRestaurantList = await AddRestroData.find({ ownerId: ownerId });
     res.json({ message: "Received List", data: getRestaurantList });
   } catch (error) {
     res.json({ message: error });

@@ -3,9 +3,9 @@ import HomePage1 from "../images/Home_page1.jpg";
 import biriyani_img1 from "../images/biriyani.jpg";
 import axios from "axios";
 import { REACT_APP_HOST } from "../utils/Host_pass";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
+import RestaurantCard from "./RestaurantCard";
 function Home() {
   const [restaurantList, setRestaurantList] = useState([]);
   const fetchData = async () => {
@@ -14,10 +14,6 @@ function Home() {
     );
     console.log("getList of Restro", resData.data.data);
     setRestaurantList(resData.data.data);
-  };
-  const navigate = useNavigate();
-  const RestroMenu_Details = () => {
-    navigate("/restaurant");
   };
   useEffect(() => {
     fetchData();
@@ -81,30 +77,10 @@ function Home() {
         </h1>
         <div className="flex flex-wrap mt-4">
           {restaurantList && restaurantList.length > 0 ? (
-            restaurantList.map((item, index) => (
-              <div key={index}>
-                <div className=" m-4 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
-                  <img
-                    src={`http://localhost:5000/` + item.file}
-                    alt="img"
-                    className="w-64 h-40 rounded-lg"
-                    onClick={RestroMenu_Details}
-                  />
-
-                  <div className="flex justify-between p-[13px]">
-                    <div>
-                      <h1 className="text-lg font-bold mb-3 mt-1">
-                        {item.name}
-                      </h1>
-                      <h1>{item.description}</h1>
-                    </div>
-
-                    <div className="mt-2">
-                      <FavoriteBorderIcon />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            restaurantList.map((item) => (
+              <Link key={item._id} to={"/restaurantmenu/" + item._id}>
+                <RestaurantCard resData={item} />
+              </Link>
             ))
           ) : (
             <Shimmer />

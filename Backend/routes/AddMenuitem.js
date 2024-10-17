@@ -48,9 +48,19 @@ AddnewMenu.post("/addItem", upload.single("image"), async (req, res) => {
     res.status(500).json({ message: error });
   }
 });
-AddnewMenu.get("/getMenulist", async (req, res) => {
+AddnewMenu.get("/getMenulist/:resId", async (req, res) => {
+  const id = req.params.resId;
   try {
-    const getMenuList = await AddMenuItems.find();
+    const getMenuList = await AddMenuItems.find({ restaurantId: id });
+    res.json({ message: "Received List", data: getMenuList });
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+AddnewMenu.get("/AllMenulist/:ownerId", async (req, res) => {
+  const id = req.params.ownerId;
+  try {
+    const getMenuList = await AddMenuItems.find({ ownerId: id });
     res.json({ message: "Received List", data: getMenuList });
   } catch (error) {
     res.json({ message: error });
