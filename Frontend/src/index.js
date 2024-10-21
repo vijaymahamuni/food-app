@@ -31,6 +31,7 @@ import AddCartItems from "./components/RestaurantMenu.js/AddCartItems";
 import AddMenuItem from "./Admin/AddMenuItem";
 import AllMenuItems from "./Admin/AllMenuItems";
 import RestroDetails from "./Admin/RestroDetails";
+import Addresses from "./components/MyProfile/Addresses";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -154,6 +155,10 @@ const appRouter = createBrowserRouter([
           {
             path: "/my-profile/logout",
             element: <LogoutPage />,
+          },
+          {
+            path: "/my-profile/address",
+            element: <Addresses />,
           },
         ],
       },

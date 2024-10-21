@@ -12,10 +12,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addItems } from "../../utils/cartSlice";
 function RestroMenus() {
   const [menuList, setMenuList] = useState([]);
   const { resId } = useParams();
   console.log("resID", resId);
+  const CurrCustId = localStorage.getItem("customerId");
 
   const fetchData = async () => {
     const resData = await axios.get(
@@ -27,6 +30,22 @@ function RestroMenus() {
   useEffect(() => {
     fetchData();
   }, []);
+  const dispatch = useDispatch();
+  const AddToCart = async (item) => {
+    console.log("getOriginal Cartitems", item);
+
+    try {
+      dispatch(addItems(item));
+      const checkUser_Restro = await axios.post(
+        `${REACT_APP_HOST}/api/cart/addCartItem`,
+        {
+          item,
+          CurrCustId,
+        }
+      );
+      console.log(checkUser_Restro);
+    } catch (error) {}
+  };
   return (
     <div className=" w-11/12 mx-auto flex">
       <div className="mt-4 w-[20%] bg-gray-50 p-6">
@@ -250,7 +269,10 @@ function RestroMenus() {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                <button className="p-1 font-thin rounded-sm text-sm bg-[#f84260] w-32 text-white">
+                <button
+                  className="p-1 font-thin rounded-sm text-sm bg-[#f84260] w-32 text-white"
+                  onClick={() => AddToCart(item)}
+                >
                   ADD TO CART
                 </button>
               </Typography>

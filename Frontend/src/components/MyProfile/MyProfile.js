@@ -11,6 +11,7 @@ import Orders from "./Orders";
 import LogoutPage from "./LogoutPage";
 import { Navigate } from "react-router-dom";
 import Favorites from "./Favorites";
+import Addresses from "./Addresses";
 function MyProfile() {
   const [open, setOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(false);
@@ -75,6 +76,12 @@ function MyProfile() {
           <>
             <Navigate to="/my-profile/logout" />
             <LogoutPage />
+          </>
+        )}
+        {selectedMenu === "Address" && (
+          <>
+            <Navigate to="/my-profile/address" />
+            <Addresses />
           </>
         )}
       </div>

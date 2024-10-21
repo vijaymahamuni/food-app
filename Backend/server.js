@@ -7,6 +7,7 @@ const foodRouter = require("./routes/foodRouter.js");
 // const AddRestaurant = require("./routes/AddRestaurant.js");
 const AddnewRestro = require("./routes/AddRestaurant.js");
 const AddnewMenu = require("./routes/AddMenuitem.js");
+const AddcartItems = require("./routes/AddcartItems.js");
 // Initialize Express app
 const app = express();
 app.use(express.json());
@@ -30,6 +31,9 @@ app.use("/api/owner", AddnewRestro);
 
 //addMenuItem
 app.use("/api/menu", AddnewMenu);
+
+//addCart items
+app.use("/api/cart", AddcartItems);
 
 app.use("/uploads", express.static("uploads")); // Serve images statically
 

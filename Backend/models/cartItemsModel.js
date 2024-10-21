@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const AddMenuSchema = new mongoose.Schema({
+const AddCartSchema = new mongoose.Schema({
+  menuId: String,
   name: String,
   description: String,
   price: Number,
@@ -11,8 +12,9 @@ const AddMenuSchema = new mongoose.Schema({
   file: String,
   ownerId: String,
   restaurantId: String,
+  loginCustomerId: String,
 });
 
-const AddMenuItems = mongoose.model("addMenu", AddMenuSchema);
+const AddCartMenuItems = mongoose.model("AddCartMenu", AddCartSchema);
 
-module.exports = AddMenuItems;
+module.exports = AddCartMenuItems;
