@@ -57,6 +57,8 @@ function RestroMenus() {
                 fontSize: "18px",
                 color: "black",
                 fontWeight: "bold",
+                color: "#424242",
+                fontFamily: ["Playfair Display", "serif"],
               }}
             >
               Filters
@@ -78,6 +80,10 @@ function RestroMenus() {
                     }}
                   />
                 }
+                style={{
+                  color: "#424242",
+                  fontFamily: ["Montserrat", "sans-serif"],
+                }}
                 label="TopRated Item"
               />
               <FormControlLabel
@@ -104,6 +110,8 @@ function RestroMenus() {
                 fontSize: "18px",
                 color: "black",
                 fontWeight: "bold",
+                color: "#424242",
+                fontFamily: ["Playfair Display", "serif"],
               }}
             >
               Food Type

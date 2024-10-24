@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const auth = require("../middleware/auth");
 
-// Register Route
+// RegisterRoute
 router.post("/register", async (req, res) => {
   const { userName, userEmail, typeofUsers, password } = req.body;
 
@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
         useremail: CheckUser.userEmail,
       },
       "r_d_g_m_a_v1112#",
-      { expiresIn: "1h" }
+      { expiresIn: "3h" }
     );
 
     res.status(200).json({

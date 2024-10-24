@@ -26,13 +26,17 @@ function Home() {
         alt="Home Page"
       />
       <div className="absolute top-[330px] text-center left-[29%] text-white  ">
-        <h1 className="text-5xl font-bold">Welcome to the Foodie </h1>
-        <h1 className="text-3xl mt-6 ">
+        <h1 className=" font-bold font-playfair text-5xl ">
+          Welcome to the Foodie{" "}
+        </h1>
+        <h1 className="mt-6 font-montserrat text-3xl ">
           Taste Convenience:Food ,Fast and Delivered{" "}
         </h1>
       </div>
       <div className=" w-11/12 mx-auto p-4">
-        <h1 className="text-2xl text-gray-500">What's on your mind?</h1>
+        <h1 className="text-2xl text-textColor font-playfair">
+          What's on your mind?
+        </h1>
         <div className="flex justify-between">
           <img
             src={biriyani_img1}
@@ -72,7 +76,7 @@ function Home() {
         </div>
       </div>
       <div className=" w-11/12 mx-auto ">
-        <h1 className="text-2xl text-gray-500">
+        <h1 className="text-2xl text-textColor font-playfair">
           Top restaurant chains in Chennai
         </h1>
         <div className="flex flex-wrap mt-4">

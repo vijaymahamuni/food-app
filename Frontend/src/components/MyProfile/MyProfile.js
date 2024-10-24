@@ -36,7 +36,7 @@ function MyProfile() {
         }  h-screen bg-white relative duration-300 border-r-[1px] `}
       >
         <KeyboardArrowLeftIcon
-          className={`absolute cursor-pointer -right-3 top-12 w-7 rounded-full bg-white border-2 border-[#f84260] ${
+          className={`absolute cursor-pointer -right-3 top-12 w-7 rounded-full bg-white border-2 border-button ${
             open && "rotate-180"
           }`}
           onClick={() => setOpen(!open)}
@@ -45,11 +45,13 @@ function MyProfile() {
           {Menus.map((menu, index) => (
             <li
               key={index}
-              className="text-black text-lg flex items-center gap-x-4 cursor-pointer p-[31px] hover:bg-green-300 border-b-[1px] "
+              className="text-textColor text-lg flex items-center gap-x-4 cursor-pointer p-[31px] hover:bg-green-300 border-b-[1px] "
             >
               <span>{menu.src}</span>
               <span
-                className={`${open && "hidden"} origin-left duration-200`}
+                className={`${
+                  open && "hidden"
+                } origin-left duration-200 font-playfair text-lg`}
                 onClick={() => setSelectedMenu(menu.title)}
               >
                 {menu.title}

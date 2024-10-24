@@ -72,7 +72,7 @@ const Header = () => {
     }
   };
   return (
-    <div className=" h-[70px]  bg-[#f84260] items-center">
+    <div className=" h-[70px]  bg-primary items-center">
       <div className="flex  w-11/12 mx-auto justify-between ">
         <div className="cursor-pointer" onClick={handleHome}>
           <img className="w-[140px] h-[80px]" src={foodie} alt="" />
@@ -98,7 +98,14 @@ const Header = () => {
                       className="text-white font-bold "
                     />
                   ) : (
-                    <Avatar sx={{ bgcolor: "white", color: "black" }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: "white",
+                        color: "#424242",
+                        fontFamily: ["Playfair Display", "serif"],
+                        fontSize: "21px",
+                      }}
+                    >
                       {ProfileAvatar}
                     </Avatar>
                     // <Avatar

@@ -14,8 +14,12 @@ const RestaurantCard = ({ resData }) => {
 
         <div className="flex justify-between p-[13px]">
           <div>
-            <h1 className="text-lg font-bold mb-3 mt-1">{resData.name}</h1>
-            <h1 className=" w-[200px] break-words">{resData.description}</h1>
+            <h1 className="text-lg font-bold mb-3 mt-1 font-playfair">
+              {resData.name}
+            </h1>
+            <h1 className=" w-[200px] break-words font-montserrat">
+              {resData.description}
+            </h1>
           </div>
 
           <div className="mt-2">
