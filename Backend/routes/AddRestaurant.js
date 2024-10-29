@@ -27,7 +27,7 @@ AddnewRestro.post(
   "/addrestaurant",
   upload.single("image"),
   async (req, res) => {
-    console.log(req.file.filename);
+    // console.log(req.file.filename);
     const ImageFile = req.file.filename;
     const {
       name,
@@ -85,7 +85,7 @@ AddnewRestro.get("/getRestroList", async (req, res) => {
 //get Restaurant data for Restro Details Disply in Profile
 AddnewRestro.get("/getRestrodata/:ownerId", async (req, res) => {
   const ownerId = req.params.ownerId;
-  console.log(ownerId);
+  // console.log(ownerId);
   try {
     const getRestaurantList = await AddRestroData.find({ ownerId: ownerId });
     res.json({ message: "Received List", data: getRestaurantList });

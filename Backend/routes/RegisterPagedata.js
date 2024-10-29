@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { userEmail, password } = req.body;
-  console.log(userEmail, password);
+  // console.log(userEmail, password);
 
   try {
     // Check if user exists

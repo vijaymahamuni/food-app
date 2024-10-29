@@ -18,7 +18,7 @@ AddcartItems.post("/addCartItem", async (req, res) => {
     restaurantId,
   } = req.body.item;
   const CurrCustomer = req.body.CurrCustId;
-  console.log(CurrCustomer);
+  // console.log(CurrCustomer);
 
   try {
     const AddMenu = new AddCartMenuItems({
@@ -46,13 +46,13 @@ AddcartItems.post("/addCartItem", async (req, res) => {
 
 AddcartItems.get("/cartData/:ownerId", auth, async (req, res) => {
   const id = req.params.ownerId;
-  console.log(id);
+  // console.log(id);
   try {
     const getMenuList = await AddCartMenuItems.find({ loginCustomerId: id });
-    console.log();
-    res.json({ message: "Received List", data: getMenuList });
+    // console.log();
+    res.status(200).json({ message: "Received List", data: getMenuList });
   } catch (error) {
-    res.json({ message: error });
+    res.status(500).json({ message: error });
   }
 });
 

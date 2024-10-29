@@ -8,10 +8,13 @@ const foodRouter = require("./routes/foodRouter.js");
 const AddnewRestro = require("./routes/AddRestaurant.js");
 const AddnewMenu = require("./routes/AddMenuitem.js");
 const AddcartItems = require("./routes/AddcartItems.js");
+const AddnewAddress = require("./routes/AddnewAddress.js");
+const stripePayment = require("./routes/StripePayment.js");
 // Initialize Express app
 const app = express();
 app.use(express.json());
 app.use(express.static("uploads"));
+
 app.use(
   cors({
     origin: "http://localhost:3000", // Allow only the React frontend
@@ -34,6 +37,12 @@ app.use("/api/menu", AddnewMenu);
 
 //addCart items
 app.use("/api/cart", AddcartItems);
+
+//add_newaddress
+app.use("/api/order", AddnewAddress);
+
+//stripe payment method
+app.use("/api/payment", stripePayment);
 
 app.use("/uploads", express.static("uploads")); // Serve images statically
 

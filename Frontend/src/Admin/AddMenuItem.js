@@ -41,7 +41,7 @@ const AddMenuItem = () => {
         `${REACT_APP_HOST}/api/menu/addItem`,
         formData
       );
-      console.log("Menudata", Menudata);
+      // console.log("Menudata", Menudata);
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +54,7 @@ const AddMenuItem = () => {
         ownerId,
       }
     );
-    console.log("getList of Restro", checkUser_Restro.data.data._id);
+    // console.log("getList of Restro", checkUser_Restro.data.data._id);
     setRestaurantId(checkUser_Restro.data.data._id);
   };
   useEffect(() => {
