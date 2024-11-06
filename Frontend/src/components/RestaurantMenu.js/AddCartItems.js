@@ -8,6 +8,7 @@ import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { useDispatch, useSelector } from "react-redux";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
 import { setItems } from "../../utils/cartSlice";
+import { clearItems } from "../../utils/cartSlice";
 import emptyCart from "../../images/Nocartim.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -107,6 +108,10 @@ const AddCartItems = () => {
     setAddnewAddr(!addnewaddr);
   };
 
+  const handle_clearCart = () => {
+    dispatch(clearItems());
+  };
+
   return (
     <div>
       {addnewaddr && <AddAddress close_popup={AddnewAddress} />}
@@ -201,12 +206,25 @@ const AddCartItems = () => {
                       GST_Price}
                   </h1>
                 </div>
-                <div className="flex justify-end mt-16">
-                  <button>
-                    <Elements stripe={stripePromise}>
-                      <StripePayment cartItems={CartItemsData} />
-                    </Elements>
-                  </button>
+                <div className="flex justify-between mt-16">
+                  <div>
+                    <button
+                      className="p-[6px] border-2 rounded-sm  hover:bg-primary hover:text-white"
+                      onClick={handle_clearCart}
+                    >
+                      Clear Cart
+                    </button>
+                  </div>
+                  <div>
+                    <button>
+                      <Elements stripe={stripePromise}>
+                        <StripePayment
+                          cartItems={CartItemsData}
+                          addressDetails={addressDetails}
+                        />
+                      </Elements>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -12,9 +12,18 @@ import Register from "../pages/Register";
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
-
-// import Stack from "@mui/material/Stack";
-// import { deepOrange, deepPurple } from "@mui/material/colors";
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import { useSelector } from "react-redux";
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 1,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
 const Header = () => {
   // const [btnLogin, setBtnLogin] = useState("Logout");
   //Subscribing tot the store using a useSelector
@@ -71,6 +80,9 @@ const Header = () => {
       navigate("/my-profile");
     }
   };
+  const CartItemsData = useSelector((store) => store.cart.items);
+  console.log(CartItemsData.length);
+  const Cart_count = CartItemsData.length;
   return (
     <div className=" h-[70px]  bg-primary items-center">
       <div className="flex  w-11/12 mx-auto justify-between ">
@@ -122,10 +134,18 @@ const Header = () => {
             </li>
             <li className="m-2 p-2 ml-8 font-[500] text-[18px] hover:text-orange-600">
               <Link to="/cart">
-                <ShoppingCartIcon
+                {/* <ShoppingCartIcon
                   fontSize="medium"
                   className="text-white font-bold "
-                />
+                /> */}
+                <IconButton aria-label="cart">
+                  <StyledBadge badgeContent={Cart_count} color="secondary">
+                    <ShoppingCartIcon
+                      // fontSize="medium"
+                      className="text-white font-bold "
+                    />
+                  </StyledBadge>
+                </IconButton>
               </Link>
             </li>
           </ul>

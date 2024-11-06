@@ -25,6 +25,10 @@ AddnewMenu.post("/addItem", upload.single("image"), async (req, res) => {
     isSeasonal,
     ownerId,
     restaurantId,
+    quantity,
+    Status,
+    availabilty,
+    rating,
   } = req.body;
 
   const ImageFile = req.file.filename;
@@ -41,6 +45,10 @@ AddnewMenu.post("/addItem", upload.single("image"), async (req, res) => {
       file: ImageFile,
       ownerId,
       restaurantId,
+      quantity,
+      Status,
+      availabilty,
+      rating,
     });
     await AddMenu.save();
     res.status(200).json({ message: "Adding Menuitem Details successfully" });

@@ -10,6 +10,7 @@ const AddnewMenu = require("./routes/AddMenuitem.js");
 const AddcartItems = require("./routes/AddcartItems.js");
 const AddnewAddress = require("./routes/AddnewAddress.js");
 const stripePayment = require("./routes/StripePayment.js");
+const orderItems = require("./routes/Orders.js");
 // Initialize Express app
 const app = express();
 app.use(express.json());
@@ -43,6 +44,9 @@ app.use("/api/order", AddnewAddress);
 
 //stripe payment method
 app.use("/api/payment", stripePayment);
+
+//orderItems data
+app.use("/api/order", orderItems);
 
 app.use("/uploads", express.static("uploads")); // Serve images statically
 

@@ -16,12 +16,12 @@ const AllMenuItems = () => {
   const [menuList, setMenuList] = useState([]);
   const [showAddmenu, setShowAddmenu] = useState(false);
   const ownerId = localStorage.getItem("customerId");
-  console.log("resId", ownerId);
+  // console.log("resId", ownerId);
   const fetchData = async () => {
     const resData = await axios.get(
       `${REACT_APP_HOST}/api/menu/AllMenulist/${ownerId}`
     );
-    console.log("getList of menu", resData.data.data);
+    // console.log("getList of menu", resData.data.data);
     setMenuList(resData.data.data);
   };
   useEffect(() => {
@@ -31,6 +31,15 @@ const AllMenuItems = () => {
   const addNewMenu = () => {
     // navigate("/admin/addrestaurant");
     setShowAddmenu(!showAddmenu);
+    if (!showAddmenu) {
+      navigate("/admin/restaurant/menu"); // Navigate after rendering Dummy
+    }
+  };
+  const handleChange = (e) => {
+    // console.log(e.target.files);
+    alert("hi");
+    // setFile(URL.createObjectURL(e.target.files[0]));
+    // setImage(e.target.files[0]);
   };
 
   return (
@@ -87,9 +96,7 @@ const AllMenuItems = () => {
           </TableContainer>
         </>
       ) : (
-        <Link to={"/admin/restaurant/menu"}>
-          <AddMenuItem />
-        </Link>
+        <AddMenuItem />
       )}
     </div>
   );

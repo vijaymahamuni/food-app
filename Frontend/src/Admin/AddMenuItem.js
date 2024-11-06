@@ -15,11 +15,13 @@ const AddMenuItem = () => {
   const [ingredient, setIngredient] = useState("");
   const [isVegitarian, setIsVegitarian] = useState("");
   const [isSeasonal, setIsSeasonal] = useState("");
-  const handleChange = (e) => {
-    // console.log(e.target.files);
-    // setFile(URL.createObjectURL(e.target.files[0]));
-    setImage(e.target.files[0]);
-  };
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const quantity = 1;
+  // const [customerEmail,setCustomerEmail]=useState();
+  const Status = "Pending";
+  const availabilty = "IN STOCK";
+  const [rating, setRating] = useState();
 
   const ownerId = localStorage.getItem("customerId");
 
@@ -35,6 +37,10 @@ const AddMenuItem = () => {
     formData.append("isSeasonal", isSeasonal);
     formData.append("ownerId", ownerId);
     formData.append("restaurantId", restaurantId);
+    formData.append("quantity", quantity);
+    formData.append("Status", Status);
+    formData.append("availabilty", availabilty);
+    formData.append("rating", rating);
 
     try {
       const Menudata = await axios.post(
@@ -46,6 +52,14 @@ const AddMenuItem = () => {
       console.log(error);
     }
   };
+  const handleChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
   const [restaurantId, setRestaurantId] = useState();
   const fetchData = async () => {
     const checkUser_Restro = await axios.post(
@@ -59,7 +73,7 @@ const AddMenuItem = () => {
   };
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   return (
     <div className="w-5/6 mx-auto">
@@ -170,25 +184,48 @@ const AddMenuItem = () => {
           </Box>
         </div>
       </div>
-      <div className="mt-[10px]">
-        <FormControl sx={{ m: 1, width: 860 }}>
-          <InputLabel id="food-category-label">Ingredients</InputLabel>
-          <Select
-            labelId="ingredient-label"
-            id="ingredient-id"
-            value={ingredient}
-            label="Ingredient"
-            onChange={(e) => setIngredient(e.target.value)}
+      <div className="flex">
+        <div className="mt-[10px]">
+          <FormControl sx={{ m: 1, width: "49ch" }}>
+            <InputLabel id="food-category-label">Ingredients</InputLabel>
+            <Select
+              labelId="ingredient-label"
+              id="ingredient-id"
+              value={ingredient}
+              label="Ingredient"
+              onChange={(e) => setIngredient(e.target.value)}
+            >
+              <MenuItem value="Chicken">Chicken</MenuItem>
+              <MenuItem value="Rice">Rice</MenuItem>
+              <MenuItem value="Spices">Spices</MenuItem>
+              <MenuItem value="Vegetables">Vegetables</MenuItem>
+              <MenuItem value="Cheese">Cheese</MenuItem>
+              <MenuItem value="Paneer">Paneer</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className="mt-[10px]">
+          <Box
+            component="form"
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "49ch" },
+            }}
+            noValidate
           >
-            <MenuItem value="Chicken">Chicken</MenuItem>
-            <MenuItem value="Rice">Rice</MenuItem>
-            <MenuItem value="Spices">Spices</MenuItem>
-            <MenuItem value="Vegetables">Vegetables</MenuItem>
-            <MenuItem value="Cheese">Cheese</MenuItem>
-            <MenuItem value="Paneer">Paneer</MenuItem>
-          </Select>
-        </FormControl>
+            <TextField
+              id="outlined-textarea"
+              type="text"
+              label="Rating"
+              name="rating"
+              placeholder="Rating"
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+              className="text-white"
+            />
+          </Box>
+        </div>
       </div>
+
       <div className="flex">
         <div className="mt-[10px]">
           <FormControl sx={{ m: 1, width: 420 }}>

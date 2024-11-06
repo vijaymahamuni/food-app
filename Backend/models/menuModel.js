@@ -11,6 +11,10 @@ const AddMenuSchema = new mongoose.Schema({
   file: String,
   ownerId: String,
   restaurantId: String,
+  quantity: Number,
+  Status: String,
+  availabilty: String,
+  rating: String,
 });
 
 const AddMenuItems = mongoose.model("addMenu", AddMenuSchema);
