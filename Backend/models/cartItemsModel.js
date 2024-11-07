@@ -13,6 +13,10 @@ const AddCartSchema = new mongoose.Schema({
   ownerId: String,
   restaurantId: String,
   loginCustomerId: String,
+  quantity: Number,
+  Status: String,
+  availabilty: String,
+  rating: String,
 });
 
 const AddCartMenuItems = mongoose.model("AddCartMenu", AddCartSchema);

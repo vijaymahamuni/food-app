@@ -10,11 +10,11 @@ const cartSlice = createSlice({
       //mutating the state here
       state.items.push(action.payload);
     },
-    removeItems: (state) => {
-      state.items.pop();
+    removeItems: (state, action) => {
+      state.items = state.items.filter((item) => item._id !== action.payload); // delete cart Items by Id wise
     },
     clearItems: (state) => {
-      state.items.length = 0; // equivalent to setting []
+      state.items.length = 0; // equivalent to setting [] and Delte all CartItems
     },
     setItems: (state, action) => {
       state.items = action.payload || []; // Reset items to initial or custom value

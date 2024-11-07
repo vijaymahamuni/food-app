@@ -4,47 +4,101 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import Accordion from "@mui/material/Accordion";
+// import AccordionSummary from "@mui/material/AccordionSummary";
+// import AccordionDetails from "@mui/material/AccordionDetails";
+// import Typography from "@mui/material/Typography";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 import axios from "axios";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addItems } from "../../utils/cartSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addItems, clearItems } from "../../utils/cartSlice";
+import Swal from "sweetalert2";
+
 function RestroMenus() {
   const [menuList, setMenuList] = useState([]);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
   const { resId } = useParams();
-  console.log("resID", resId);
+  // console.log("resID", resId);
   const CurrCustId = localStorage.getItem("customerId");
 
   const fetchData = async () => {
     const resData = await axios.get(
       `${REACT_APP_HOST}/api/menu/getMenulist/${resId}`
     );
-    console.log("getList of menu", resData.data.data);
+    // console.log("getList of menu", resData.data.data);
     setMenuList(resData.data.data);
   };
   useEffect(() => {
     fetchData();
   }, []);
   const dispatch = useDispatch();
-  const AddToCart = async (item) => {
-    console.log("getOriginal Cartitems", item);
+  const CartItemsData = useSelector((store) => store.cart.items);
+  console.log("CartItemsData", CartItemsData.length);
+  const prevCartResId = CartItemsData[0]?.restaurantId;
 
-    try {
-      dispatch(addItems(item));
-      const checkUser_Restro = await axios.post(
-        `${REACT_APP_HOST}/api/cart/addCartItem`,
-        {
-          item,
-          CurrCustId,
+  const AddToCart = async (item) => {
+    console.log("getOriginal Cartitems", item.restaurantId);
+    const sltitemResId = item.restaurantId;
+    if (CartItemsData.length !== 0 && prevCartResId !== sltitemResId) {
+      Swal.fire({
+        title: "Items Already in Cart?",
+        text: "your cart contains items from other restaurant.Would you like to reset your cart for adding items from this restaurant?",
+        showCancelButton: true,
+        confirmButtonText: "YES, START AFRESH",
+        cancelButtonText: "NO",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Swal.fire("Done!", "Your action has been confirmed.", "success");
+          // Perform confirmed action here
+
+          //if both previous and curr add items not same then clear prev Cartitems in redux and api and then add this new items
+          dispatch(clearItems());
+          const removeAllItemsApi = axios.delete(
+            `${REACT_APP_HOST}/api/cart/removeCartItems`
+          );
+
+          //update redux and api new cartItems data
+          dispatch(addItems(item));
+          const addCartItemsApi = axios.post(
+            `${REACT_APP_HOST}/api/cart/addCartItem`,
+            {
+              item,
+              CurrCustId,
+            }
+          );
+          setShowSuccessAlert(true); // Show success alert
+
+          // console.log(removeAllItemsApi.data.message);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Swal.fire("Cancelled", "Your action has been cancelled.", "error");
+          // Perform cancel action here
         }
-      );
-      console.log(checkUser_Restro);
-    } catch (error) {}
+      });
+    } else {
+      try {
+        dispatch(addItems(item));
+        const checkUser_Restro = await axios.post(
+          `${REACT_APP_HOST}/api/cart/addCartItem`,
+          {
+            item,
+            CurrCustId,
+          }
+        );
+        console.log(checkUser_Restro);
+        setShowSuccessAlert(true); // Show success alert
+      } catch (error) {}
+    }
+  };
+  const navigate = useNavigate();
+  const ViewCartpage = () => {
+    navigate("/cart");
   };
   return (
     <div className=" w-11/12 mx-auto flex">
@@ -251,42 +305,58 @@ function RestroMenus() {
           </FormControl>
         </div>
       </div>
-      <div className="w-9/12 pl-10">
+      <div className="w-8/12 pl-6 bg-gray-50 mx-auto mt-4 ">
         {menuList.map((item, index) => (
-          <Accordion key={index} className="mt-4">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography className="flex p-1">
-                <div className="mt-2">
-                  <img
-                    src={`http://localhost:5000/` + item.file}
-                    alt="menuImg"
-                    className="w-28 h-28 rounded-lg"
-                  />
-                </div>
-                <div className="ml-4">
-                  <h1 className="text-lg font-bold">{item.name}</h1>
-                  <h1 className="mt-2 font-extralight">₹{item.price}</h1>
-                  <h1 className="mt-2">{item.description}</h1>
-                  <h1 className="mt-2">★4.3</h1>
-                </div>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                <button
-                  className="p-1 font-thin rounded-sm text-sm bg-[#f84260] w-32 text-white"
-                  onClick={() => AddToCart(item)}
-                >
-                  ADD TO CART
-                </button>
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+          <div className="border-b-2 border-gray-200 flex justify-between ">
+            <div className="w-9/12 my-1 font-playfair">
+              <div>
+                <p className="text-lg font-bold font-playfair tex-[#424242]">
+                  {item.name}
+                </p>
+                <p className="mt-1 font-semibold ">₹{item.price}</p>
+              </div>
+              <span
+                className={`${
+                  item.rating > 3 ? "text-green-600" : "text-yellow-600"
+                }`}
+              >
+                {item.rating} ★
+              </span>
+
+              <p className="text-md py-2 pb-8">{item.description}</p>
+            </div>
+            <div>
+              <button
+                className="p-1 m-1 w-20 font-bold text-green-600 bg-white absolute my-24 ml-7 rounded-md"
+                onClick={() => AddToCart(item)}
+              >
+                ADD
+              </button>
+              <div className="p-2">
+                <img
+                  src={`http://localhost:5000/` + item.file}
+                  className="w-28 h-28 rounded-lg"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
         ))}
+        {showSuccessAlert && (
+          <Stack spacing={2} className="absolute mt-36 w-7/12">
+            <Alert variant="filled" severity="success" className="flex ">
+              <div className="flex justify-between ">
+                <h1 className=" font-semibold items-start">1 item added</h1>
+                <h1
+                  className="font-semibold  cursor-pointer items-end ml-[620px]"
+                  onClick={ViewCartpage}
+                >
+                  VIEW CART <LocalMallIcon fontSize="medium" />
+                </h1>
+              </div>
+            </Alert>
+          </Stack>
+        )}
       </div>
     </div>
   );

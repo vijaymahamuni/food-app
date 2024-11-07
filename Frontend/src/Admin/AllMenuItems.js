@@ -35,12 +35,6 @@ const AllMenuItems = () => {
       navigate("/admin/restaurant/menu"); // Navigate after rendering Dummy
     }
   };
-  const handleChange = (e) => {
-    // console.log(e.target.files);
-    alert("hi");
-    // setFile(URL.createObjectURL(e.target.files[0]));
-    // setImage(e.target.files[0]);
-  };
 
   return (
     <div>
@@ -83,9 +77,7 @@ const AllMenuItems = () => {
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.ingredient}</TableCell>
                     <TableCell>₹{row.price}</TableCell>
-                    <TableCell>
-                      <h1>IN STOCK</h1>
-                    </TableCell>
+                    <TableCell>{row.availabilty}</TableCell>
                     <TableCell>
                       <DeleteIcon className="text-[#f84260]" />
                     </TableCell>

@@ -33,6 +33,7 @@ import AllMenuItems from "./Admin/AllMenuItems";
 import RestroDetails from "./Admin/RestroDetails";
 import Addresses from "./components/MyProfile/Addresses";
 import OrdersList from "./Admin/OrdersList";
+import NotFound from "./components/NotFound";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -183,6 +184,10 @@ const appRouter = createBrowserRouter([
       {
         path: "admin/addrestaurant",
         element: <AddRestaurant />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

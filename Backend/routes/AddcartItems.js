@@ -16,6 +16,10 @@ AddcartItems.post("/addCartItem", async (req, res) => {
     file,
     ownerId,
     restaurantId,
+    quantity,
+    Status,
+    availabilty,
+    rating,
   } = req.body.item;
   const CurrCustomer = req.body.CurrCustId;
   // console.log(CurrCustomer);
@@ -34,6 +38,10 @@ AddcartItems.post("/addCartItem", async (req, res) => {
       ownerId,
       restaurantId,
       loginCustomerId: CurrCustomer,
+      quantity,
+      Status,
+      availabilty,
+      rating,
     });
     await AddMenu.save();
     res.status(200).json({ message: "Adding Cart Details successfully" });
@@ -56,4 +64,15 @@ AddcartItems.get("/cartData/:ownerId", auth, async (req, res) => {
   }
 });
 
+//delete AllCartItems data
+
+AddcartItems.delete("/removeCartItems", async (req, res) => {
+  try {
+    const removeAllcart = await AddCartMenuItems.deleteMany();
+    // console.log();
+    res.status(200).json({ message: "Received List", data: removeAllcart });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+});
 module.exports = AddcartItems;

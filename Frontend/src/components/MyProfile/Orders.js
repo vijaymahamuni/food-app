@@ -16,8 +16,10 @@ const Orders = () => {
     const res = await axios.get(
       `${REACT_APP_HOST}/api/order/getOrderdata/${ownerId}`
     );
-    console.log("get Order Details", res.data.data[0].orderItems);
-    setOrders(res.data.data[0].orderItems);
+    console.log("get Order Details", res.data.data);
+    if (res.data.data.length !== 0) {
+      setOrders(res.data.data);
+    }
   };
 
   useEffect(() => {
@@ -27,30 +29,33 @@ const Orders = () => {
   return (
     <div className="w-6/12  mx-auto">
       <h1 className="text-2xl font-bold text-center">My Orders</h1>
-      {orders.map((item, index) => (
-        <div key={index} className="mt-4 p-3 bg-gray-100 cursor-pointer">
-          <div className="flex justify-between items-center ">
-            <div className="flex mt-2">
-              <div>
-                <img
-                  src={`http://localhost:5000/` + item.file}
-                  alt="menuImg"
-                  className="w-16 h-16 rounded-lg"
-                />
-              </div>
+      {orders.map((order, index) => (
+        <div key={order._id}>
+          {order.orderItems.map((item) => (
+            <div key={item._id}>
+              <div className="flex justify-between mt-2 p-4 bg-gray-50">
+                {/* Left side: Image and Text */}
+                <div className="flex">
+                  <img
+                    src={`http://localhost:5000/` + item.file}
+                    alt="menuImg"
+                    className="w-16 h-16 rounded-lg"
+                  />
+                  <div className="ml-6">
+                    <h1 className="text-md font-semibold">{item.name}</h1>
+                    <h1 className="mt-2">₹{item.price}</h1>
+                  </div>
+                </div>
 
-              <div className="ml-6">
-                <h1 className="text-lg font-bold">{item.name}</h1>
-                <h1 className="mt-2 font-extralight">₹{item.price}</h1>
+                {/* Right side: Button */}
+                <div>
+                  <button className="p-1 mt-2 font-thin rounded-sm text-sm bg-[#f84260] w-20 text-white">
+                    PENDING
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div className="">
-              <button className="p-1 font-thin rounded-sm  text-sm bg-[#f84260] w-20 text-white ">
-                PENDING
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
       ))}
     </div>

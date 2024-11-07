@@ -7,7 +7,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { useDispatch, useSelector } from "react-redux";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
-import { setItems } from "../../utils/cartSlice";
+import { removeItems, setItems } from "../../utils/cartSlice";
 import { clearItems } from "../../utils/cartSlice";
 import emptyCart from "../../images/Nocartim.png";
 import axios from "axios";
@@ -112,6 +112,10 @@ const AddCartItems = () => {
     dispatch(clearItems());
   };
 
+  const DeleteCartItems = (_id) => {
+    // console.log("removeId", _id);
+    dispatch(removeItems(_id));
+  };
   return (
     <div>
       {addnewaddr && <AddAddress close_popup={AddnewAddress} />}
@@ -132,11 +136,11 @@ const AddCartItems = () => {
                         />
                       </div>
                       <div className="mt-4">
-                        <h1 className="text-lg font-playfair">
-                          {items.category}
+                        <h1 className="text-lg font-playfair w-36 break-words">
+                          {items.name}
                         </h1>
                       </div>
-                      <div className="flex  cursor-pointer mt-4 ">
+                      <div className="flex  cursor-pointer mt-4">
                         <RemoveCircleOutlineIcon
                           fontSize="medium"
                           onClick={() => handleDecre(items._id)}
@@ -165,7 +169,10 @@ const AddCartItems = () => {
                         </h1>
                       </div>
                       <div className="mt-4 ">
-                        <DeleteIcon className="text-textColor" />
+                        <DeleteIcon
+                          className="text-textColor cursor-pointer"
+                          onClick={() => DeleteCartItems(items._id)}
+                        />
                       </div>
                     </div>
                   </div>
