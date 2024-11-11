@@ -1,8 +1,6 @@
-const { array } = require("joi");
 const mongoose = require("mongoose");
 
 const OrdersSchema = new mongoose.Schema({
-  quantity: Number,
   orderItems: Array,
   loginCustomerId: String,
 });

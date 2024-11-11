@@ -14,28 +14,57 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setOrders } from "../utils/orderSlice";
 export default function OrdersList() {
-  const [orderlist, setOrderlist] = useState([]);
+  // const [orderlist, setOrderlist] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [currentItemId, setCurrentItemId] = useState(null);
+  const [currentsltId, setCurrentsltId] = useState(null);
+  const dispatch = useDispatch();
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (e, id, itemid) => {
+    setAnchorEl(e.currentTarget);
+    setCurrentItemId(itemid);
+    setCurrentsltId(id);
+    // console.log(id, itemid);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const fetchData = async () => {
     const res = await axios.get(`${REACT_APP_HOST}/api/order/allOrdersdata`);
-    console.log("admin orders list", res.data.data);
+    // console.log("admin orders list", res.data);
 
     if (res.data.data.length !== 0) {
-      setOrderlist(res.data.data);
+      // setOrderlist(res.data.data);
+      dispatch(setOrders(res.data.data));
     }
   };
   useEffect(() => {
     fetchData();
   }, []);
-
+  const handleUpdate = async (value) => {
+    // console.log("currseltvalue", value, currentItemId, currentsltId);
+    const res = await axios.put(
+      `${REACT_APP_HOST}/api/order/updateStatus/${currentsltId}`,
+      {
+        value,
+        currentItemId,
+      }
+    );
+    // console.log("after update status order data", res.data.data);
+    const afterUpdateArr = res.data.data;
+    //compare prevOrderlist data and currUpdate item and update OrderList in redux
+    const updateArr = orderListFRedux.map((item) =>
+      item._id === afterUpdateArr._id ? afterUpdateArr : item
+    );
+    dispatch(setOrders(updateArr));
+    // console.log("updateArr", updateArr);
+  };
+  const orderListFRedux = useSelector((store) => store.order.orders);
+  // console.log("orderListFRedux", orderListFRedux);
   return (
     <div>
       <div>
@@ -119,8 +148,8 @@ export default function OrdersList() {
                 <TableCell align="left">Update</TableCell>
               </TableRow>
             </TableHead>
-            {orderlist.map((row) => (
-              <TableBody>
+            {orderListFRedux.map((row) => (
+              <TableBody key={row._id}>
                 {row.orderItems.map((item) => (
                   <TableRow
                     key={item._id}
@@ -141,9 +170,27 @@ export default function OrdersList() {
                     <TableCell>{item.name}</TableCell>
                     <TableCell align="left">{item.ingredient}</TableCell>
                     <TableCell align="left">
-                      <span className="p-[6px] rounded-lg bg-yellow-500 text-white font-bold">
+                      <button
+                        className={`p-1 w-[120px] mt-2 font-bold rounded-sm text-sm ${
+                          item.Status === "Pending"
+                            ? " bg-[#f84260]"
+                            : item.Status === "Completed"
+                            ? "bg-yellow-400"
+                            : item.Status === "Out for Delivery"
+                            ? "bg-yellow-400"
+                            : item.Status === "Delivered"
+                            ? "bg-green-700"
+                            : "bg-[#f84260]"
+                        }   text-white`}
+                      >
                         {item.Status}
-                      </span>
+                      </button>
+                      {/* className={`${
+                  item.rating > 3 ? "text-green-600" : "text-yellow-600"
+                }`} */}
+                      {/* <span className="p-[6px] rounded-lg bg-yellow-500 text-white font-bold ">
+                        {item.Status}
+                      </span> */}
                     </TableCell>
                     <TableCell align="left">
                       <Button
@@ -153,7 +200,7 @@ export default function OrdersList() {
                         }
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
-                        onClick={handleClick}
+                        onClick={(e) => handleClick(e, row._id, item._id)}
                       >
                         STATUS
                       </Button>
@@ -172,12 +219,38 @@ export default function OrdersList() {
                           horizontal: "left",
                         }}
                       >
-                        <MenuItem onClick={handleClose}>Pending</MenuItem>
-                        <MenuItem onClick={handleClose}>Completed</MenuItem>
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem
+                          onClick={() => {
+                            handleClose();
+                            handleUpdate("Pending");
+                          }}
+                        >
+                          Pending
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleClose();
+                            handleUpdate("Completed");
+                          }}
+                        >
+                          Completed
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleClose();
+                            handleUpdate("Out for Delivery");
+                          }}
+                        >
                           Out for Delivery
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>Delivered</MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            handleClose();
+                            handleUpdate("Delivered");
+                          }}
+                        >
+                          Delivered
+                        </MenuItem>
                       </Menu>
                     </TableCell>
                   </TableRow>
