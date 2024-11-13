@@ -88,7 +88,7 @@ const AllMenuItems = () => {
           </TableContainer>
         </>
       ) : (
-        <AddMenuItem />
+        <AddMenuItem addNewMenu={addNewMenu} />
       )}
     </div>
   );

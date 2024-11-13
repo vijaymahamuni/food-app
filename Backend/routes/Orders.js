@@ -63,4 +63,14 @@ orderItems.put("/updateStatus/:id", async (req, res) => {
     res.json({ message: error });
   }
 });
+orderItems.delete("/delOrderCancel/:id", async (req, res) => {
+  const cancelId = req.params.id;
+  console.log("CancelId", cancelId);
+  try {
+    const canlOrderItem = await OrderModel.deleteOne({ _id: cancelId });
+    res.json({ message: "Cancel Order Item Succesfully" });
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
 module.exports = orderItems;

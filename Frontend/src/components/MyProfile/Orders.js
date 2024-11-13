@@ -31,14 +31,28 @@ const Orders = () => {
   }, []);
 
   const CancelOrder = (id) => {
-    // console.log("cancelId", id);
+    console.log("cancelId", id);
     const cancelOrder = getOrderList.map((item) => {
       return {
         ...item,
         orderItems: item.orderItems.filter((orderItem) => orderItem._id !== id),
       };
     });
-    // console.log("cancelOrder", cancelOrder);
+
+    const CurrCancelItem = getOrderList
+      .map((item) => ({
+        ...item,
+        orderItems: item.orderItems.filter((orderItem) => orderItem._id === id),
+      }))
+      .filter((item) => item.orderItems.length > 0); // Filter out items with empty orderItems
+
+    console.log("cancelOrder", cancelOrder);
+    // console.log("CurrCancelId", CurrCancelItem[0]._id);
+    const CurrCancelId = CurrCancelItem[0]._id;
+    const response = axios.delete(
+      `${REACT_APP_HOST}/api/order/delOrderCancel/${CurrCancelId}`
+    );
+    console.log(response.data.message);
     dispatch(setOrders(cancelOrder));
   };
 

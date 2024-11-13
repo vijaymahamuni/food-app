@@ -15,6 +15,7 @@ import AddMenuItem from "../../Admin/AddMenuItem";
 import AllMenuItems from "../../Admin/AllMenuItems";
 import RestroDetails from "../../Admin/RestroDetails";
 import OrdersList from "../../Admin/OrdersList";
+import RestaurantList from "../../Admin/RestaurantList";
 function AdminPanel() {
   const [open, setOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(false);
@@ -84,8 +85,8 @@ function AdminPanel() {
         )}
         {selectedMenu === "Details" && (
           <div>
-            <Navigate to="/admin/restaurant/details" />
-            <RestroDetails />
+            <Navigate to="/admin/restaurant/restaurantList" />
+            <RestaurantList />
           </div>
         )}
         {selectedMenu === "Orders" && (

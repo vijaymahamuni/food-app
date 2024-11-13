@@ -5,8 +5,9 @@ import TextField from "@mui/material/TextField";
 import { MenuItem, FormControl, Select, InputLabel } from "@mui/material";
 import axios from "axios";
 import { REACT_APP_HOST } from "../utils/Host_pass";
+import CloseIcon from "@mui/icons-material/Close";
 
-const AddMenuItem = () => {
+const AddMenuItem = ({ addNewMenu }) => {
   const [image, setImage] = useState();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -77,7 +78,17 @@ const AddMenuItem = () => {
 
   return (
     <div className="w-5/6 mx-auto">
-      <h1 className=" font-bold text-2xl text-center">Add New Menu Item</h1>
+      <div className=" flex  items-center justify-around">
+        <h1 className=" font-bold text-2xl text-center">Add New Menu Item</h1>
+        <CloseIcon className=" cursor-pointer mt-4" onClick={addNewMenu} />
+      </div>
+
+      {/* <div className=" flex items-center justify-center">
+        <h1 className="font-bold text-2xl text-center w-full">
+          Add New Menu Item
+        </h1>
+       
+      </div> */}
       <div className="flex">
         <div className="p-6 ml-2 mt-4 w-20 border-2 rounded-lg text-center">
           <input

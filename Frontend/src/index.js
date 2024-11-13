@@ -34,6 +34,7 @@ import RestroDetails from "./Admin/RestroDetails";
 import Addresses from "./components/MyProfile/Addresses";
 import OrdersList from "./Admin/OrdersList";
 import NotFound from "./components/NotFound";
+import RestaurantList from "./Admin/RestaurantList";
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const AppLayout = () => {
@@ -139,6 +140,10 @@ const appRouter = createBrowserRouter([
           {
             path: "/admin/restaurant/orders",
             element: <OrdersList />,
+          },
+          {
+            path: "/admin/restaurant/restaurantList",
+            element: <RestaurantList />,
           },
         ],
       },

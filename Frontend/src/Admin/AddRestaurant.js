@@ -4,7 +4,9 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { REACT_APP_HOST } from "../utils/Host_pass";
-function AddRestaurant() {
+import CloseIcon from "@mui/icons-material/Close";
+
+function AddRestaurant({ showAddnew }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [cuisineType, setCuisineType] = useState("");
@@ -59,12 +61,23 @@ function AddRestaurant() {
     }
   };
   return (
-    <div className="w-7/12  mx-auto">
-      <h1 className="pt-6 font-bold text-2xl text-center">
-        Add New Restaurant
-      </h1>
+    <div className="w-8/12  mx-auto">
+      {/* <div className="flex ">
+        <h1 className=" font-bold text-2xl text-center">Add New Restaurant</h1>
+        <CloseIcon/>
+      </div> */}
+      <div className="relative flex items-center justify-center">
+        <h1 className="font-bold text-2xl text-center w-full">
+          Add New Restaurant
+        </h1>
+        <CloseIcon
+          className="absolute right-0 cursor-pointer"
+          onClick={showAddnew}
+        />
+      </div>
+
       <div className="flex">
-        <div className="p-6 ml-2 mt-4 w-20 border-2 rounded-lg text-center">
+        <div className="p-6 ml-2 mt-8 w-20 border-2 rounded-lg text-center">
           <input
             type="file"
             id="fileInput"
