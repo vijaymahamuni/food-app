@@ -5,6 +5,7 @@ import axios from "axios";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { REACT_APP_HOST } from "../utils/Host_pass";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 function AddRestaurant({ showAddnew }) {
   const [name, setName] = useState("");
@@ -23,13 +24,14 @@ function AddRestaurant({ showAddnew }) {
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
   const [image, setImage] = useState();
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     // console.log(e.target.files);
     // setFile(URL.createObjectURL(e.target.files[0]));
     setImage(e.target.files[0]);
   };
   const ownerId = localStorage.getItem("customerId");
+  const liked = false;
 
   const createRestaurant = async () => {
     const formData = new FormData();
@@ -48,6 +50,7 @@ function AddRestaurant({ showAddnew }) {
     formData.append("instagram", instagram);
     formData.append("ownerId", ownerId);
     formData.append("image", image);
+    formData.append("liked", liked);
     console.log("formData", formData);
 
     try {
@@ -55,7 +58,11 @@ function AddRestaurant({ showAddnew }) {
         `${REACT_APP_HOST}/api/owner/addrestaurant`,
         formData
       );
-      console.log("reqSend", reqSend.data);
+      console.log("reqSend", reqSend.status);
+      if (reqSend.status === 200) {
+        alert("Successfully added your Restaurant in our Foodie App");
+        navigate("/home");
+      }
     } catch (error) {
       console.log(error);
     }

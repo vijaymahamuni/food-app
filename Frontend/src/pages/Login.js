@@ -101,6 +101,13 @@ const Login = ({ closePopup, switchToRegister }) => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                this.setState({ message: e.target.value }, () => {
+                  alert(this.state.message);
+                });
+              }
+            }}
           />
         </Box>
 

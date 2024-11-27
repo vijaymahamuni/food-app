@@ -16,6 +16,7 @@ const RestroDeytailsSchema = new mongoose.Schema({
   instagram: String,
   file: String,
   ownerId: String,
+  liked: String,
 });
 
 const RestroDetailsAdd = mongoose.model("addRestaurant", RestroDeytailsSchema);

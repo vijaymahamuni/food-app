@@ -6,14 +6,21 @@ import { REACT_APP_HOST } from "../utils/Host_pass";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import RestaurantCard from "./RestaurantCard";
+import { useDispatch, useSelector } from "react-redux";
+import { setRestros } from "../utils/restaurantSlice";
 function Home() {
-  const [restaurantList, setRestaurantList] = useState([]);
+  // const [restaurantList, setRestaurantList] = useState([]);
+  const getFavtdata = useSelector((state) => state.restaurant.restaurants);
+  const dispatch = useDispatch();
   const fetchData = async () => {
-    const resData = await axios.get(
-      `${REACT_APP_HOST}/api/owner/getRestroList`
-    );
-    console.log("getList of Restro", resData.data.data);
-    setRestaurantList(resData.data.data);
+    try {
+      const resData = await axios.get(
+        `${REACT_APP_HOST}/api/owner/getRestroList`
+      );
+      dispatch(setRestros(resData.data.data));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
   useEffect(() => {
     fetchData();
@@ -80,11 +87,11 @@ function Home() {
           Top restaurant chains in Chennai
         </h1>
         <div className="flex flex-wrap mt-4">
-          {restaurantList && restaurantList.length > 0 ? (
-            restaurantList.map((item) => (
-              <Link key={item._id} to={"/restaurantmenu/" + item._id}>
-                <RestaurantCard resData={item} />
-              </Link>
+          {getFavtdata && getFavtdata.length > 0 ? (
+            getFavtdata.map((item) => (
+              // <Link key={item._id} to={"/restaurantmenu/" + item._id}>
+              <RestaurantCard resData={item} key={item._id} />
+              // </Link>
             ))
           ) : (
             <Shimmer />

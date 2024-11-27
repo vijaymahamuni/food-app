@@ -50,6 +50,9 @@ app.use("/api/order", orderItems);
 
 app.use("/uploads", express.static("uploads")); // Serve images statically
 
+//Add Favt from user
+// app.use("/api/customer", FavtRestaurant);
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

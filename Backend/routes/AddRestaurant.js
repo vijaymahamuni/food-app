@@ -44,6 +44,7 @@ AddnewRestro.post(
       twitter,
       instagram,
       ownerId,
+      liked,
     } = req.body;
     try {
       const AddnewRestro = new AddRestroData({
@@ -62,6 +63,7 @@ AddnewRestro.post(
         instagram,
         file: ImageFile,
         ownerId,
+        liked,
       });
       await AddnewRestro.save();
       res
@@ -89,6 +91,24 @@ AddnewRestro.get("/getRestrodata/:ownerId", async (req, res) => {
   try {
     const getRestaurantList = await AddRestroData.find({ ownerId: ownerId });
     res.json({ message: "Received List", data: getRestaurantList });
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+AddnewRestro.put("/updateFavt/:likedId", async (req, res) => {
+  const likedId = req.params.likedId;
+  const { likedStatus } = req.body;
+  console.log(likedStatus);
+  try {
+    const updateFavt = await AddRestroData.findOneAndUpdate(
+      {
+        _id: likedId,
+      },
+      { $set: { liked: likedStatus } },
+      { new: true }
+    );
+    res.json({ message: "Updated Successfully", data: updateFavt });
   } catch (error) {
     res.json({ message: error });
   }
