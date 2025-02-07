@@ -99,7 +99,8 @@ AddnewRestro.get("/getRestrodata/:ownerId", async (req, res) => {
 AddnewRestro.put("/updateFavt/:likedId", async (req, res) => {
   const likedId = req.params.likedId;
   const { likedStatus } = req.body;
-  console.log(likedStatus);
+  console.log("backend_likedStatus", likedId, likedStatus);
+
   try {
     const updateFavt = await AddRestroData.findOneAndUpdate(
       {

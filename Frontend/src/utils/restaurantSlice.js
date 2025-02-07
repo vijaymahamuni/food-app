@@ -21,9 +21,22 @@ const restaurantSlice = createSlice({
     setRestros: (state, action) => {
       state.restaurants = action.payload || []; // Reset items to initial or custom value
     },
+    updateRestros: (state, action) => {
+      const { id } = action.payload;
+      state.restaurants = state.restaurants.map((restaurant) =>
+        restaurant._id === id
+          ? { ...restaurant, liked: !restaurant.liked } // Toggle liked status
+          : restaurant
+      );
+    },
   },
 });
 
-export const { addRestros, removeRestros, clearRestros, setRestros } =
-  restaurantSlice.actions;
+export const {
+  addRestros,
+  removeRestros,
+  clearRestros,
+  setRestros,
+  updateRestros,
+} = restaurantSlice.actions;
 export default restaurantSlice.reducer;
