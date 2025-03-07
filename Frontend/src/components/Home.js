@@ -11,6 +11,7 @@ import { setRestros } from "../utils/restaurantSlice";
 function Home() {
   // const [restaurantList, setRestaurantList] = useState([]);
   const getFavtdata = useSelector((state) => state.restaurant.restaurants);
+  console.log("initial Restaurnt List ", getFavtdata);
   const dispatch = useDispatch();
   const fetchData = async () => {
     try {

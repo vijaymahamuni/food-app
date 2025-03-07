@@ -48,7 +48,22 @@ const AddMenuItem = ({ addNewMenu }) => {
         `${REACT_APP_HOST}/api/menu/addItem`,
         formData
       );
+      // console.log("status after added menu:", Menudata.status);
+      if (Menudata.status === 200) {
+        alert("Adding Menuitem Details successfully");
+      } else {
+        alert("somethigs wrong ,please try again");
+      }
       // console.log("Menudata", Menudata);
+      setName("");
+      setCategory("");
+      setDescription("");
+      setIngredient("");
+      setIsSeasonal("");
+      setIsVegitarian("");
+      setRating("");
+      setPrice("");
+      setImage();
     } catch (error) {
       console.log(error);
     }

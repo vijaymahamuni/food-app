@@ -33,9 +33,9 @@ const Favorites = () => {
   return (
     <div className="flex flex-wrap mt-4">
       {getFavtdata.length > 0 ? (
-        getFavtdata.map((item) => (
-          <RestaurantCard resData={item} key={item._id} />
-        ))
+        getFavtdata
+          .filter((item) => item.liked === "true")
+          .map((item) => <RestaurantCard resData={item} key={item._id} />)
       ) : (
         <Shimmer />
       )}

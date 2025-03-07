@@ -11,8 +11,8 @@ const RestaurantCard = ({ resData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Local state to reflect UI immediately
-  const [liked, setLiked] = useState(resData.liked);
+  // Ensure liked is stored as a boolean
+  const [liked, setLiked] = useState(resData.liked === "true");
 
   const VisitRestro = () => {
     navigate(`/restaurantmenu/${resData._id}`);
@@ -20,16 +20,21 @@ const RestaurantCard = ({ resData }) => {
 
   const AddLike = async () => {
     const newLikedStatus = !liked; // Toggle local state
-    setLiked(newLikedStatus); // Update UI instantly
+    setLiked(newLikedStatus); // Update UI instantly for a smooth user experience
 
     try {
-      // Update Redux store
-      dispatch(updateRestros({ id: resData._id, liked: newLikedStatus }));
-
       // Send updated liked status to backend
-      await axios.put(`${REACT_APP_HOST}/api/owner/updateFavt/${resData._id}`, {
-        liked: newLikedStatus,
-      });
+      const response = await axios.put(
+        `${REACT_APP_HOST}/api/owner/updateFavt/${resData._id}`,
+        { liked: newLikedStatus }
+      );
+
+      if (response.status === 200) {
+        // Update Redux store only if backend update is successful
+        dispatch(updateRestros({ id: resData._id, liked: newLikedStatus }));
+      } else {
+        throw new Error("Failed to update like status");
+      }
     } catch (error) {
       console.error("Error updating liked status:", error);
       setLiked(!newLikedStatus); // Revert UI on failure

@@ -22,6 +22,10 @@ import Swal from "sweetalert2";
 function RestroMenus() {
   const [menuList, setMenuList] = useState([]);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("all");
+  const [selectedfoodCate, setSelectedfoodCate] = useState("all");
+  const [selectedtoprated, setSelectedtoprated] = useState("all");
+  const [selectedprizewise, setSelectedprizewise] = useState("all");
 
   const { resId } = useParams();
   // console.log("resID", resId);
@@ -100,6 +104,36 @@ function RestroMenus() {
   const ViewCartpage = () => {
     navigate("/cart");
   };
+
+  const handleChange = (event) => {
+    console.log("filter food type", event.target.value);
+
+    setSelectedValue(event.target.value);
+  };
+  const handlecategory = (event) => {
+    setSelectedfoodCate(event.target.value);
+  };
+  const handleToprated = (event) => {
+    setSelectedtoprated(event.target.value);
+  };
+  const handlePriceWise = (event) => {
+    setSelectedprizewise(event.target.value);
+  };
+  //filter menu
+  const FilterMenu = menuList.filter((item) => {
+    const foodtype_flt =
+      selectedValue === "all" || item.isVegitarian === selectedValue;
+    const foodCate_flt =
+      selectedfoodCate === "all" || item.category === selectedfoodCate;
+
+    const toprated =
+      selectedtoprated === "all" || item.rating >= selectedtoprated;
+
+    const pricewise_flt =
+      selectedprizewise === "all" || item.price >= selectedprizewise;
+
+    return foodtype_flt && foodCate_flt && toprated && pricewise_flt;
+  });
   return (
     <div className=" w-11/12 mx-auto flex">
       <div className="mt-4 w-[20%] bg-gray-50 p-6">
@@ -122,9 +156,28 @@ function RestroMenus() {
               defaultValue="all"
               name="radio-buttons-group"
               className="mt-3 border-b-2"
+              value={selectedtoprated}
+              onChange={handleToprated}
             >
               <FormControlLabel
-                value="toprated"
+                value="all"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#f84260", // Checked color
+                      },
+                    }}
+                  />
+                }
+                style={{
+                  color: "#424242",
+                  fontFamily: ["Montserrat", "sans-serif"],
+                }}
+                label="All"
+              />
+              <FormControlLabel
+                value="4"
                 control={
                   <Radio
                     sx={{
@@ -140,8 +193,43 @@ function RestroMenus() {
                 }}
                 label="TopRated Item"
               />
+            </RadioGroup>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="all"
+              name="radio-buttons-group"
+              className="mt-3 border-b-2"
+              value={selectedprizewise} // Controlled component
+              onChange={handlePriceWise} // Handle change event
+            >
               <FormControlLabel
-                value="above 400"
+                value="all"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#f84260", // Checked color
+                      },
+                    }}
+                  />
+                }
+                label="All"
+              />
+              <FormControlLabel
+                value="200"
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#f84260", // Checked color
+                      },
+                    }}
+                  />
+                }
+                label="Above 200"
+              />
+              <FormControlLabel
+                value="400"
                 control={
                   <Radio
                     sx={{
@@ -175,6 +263,8 @@ function RestroMenus() {
               defaultValue="all"
               name="radio-buttons-group"
               className="mt-3 border-b-2"
+              value={selectedValue} // Controlled component
+              onChange={handleChange} // Handle change event
             >
               <FormControlLabel
                 value="all"
@@ -190,7 +280,7 @@ function RestroMenus() {
                 label="All"
               />
               <FormControlLabel
-                value="vegetarian only"
+                value="yes"
                 control={
                   <Radio
                     sx={{
@@ -203,7 +293,7 @@ function RestroMenus() {
                 label="Vegetarian Only"
               />
               <FormControlLabel
-                value="non-vegetarian only"
+                value="no"
                 control={
                   <Radio
                     sx={{
@@ -248,6 +338,8 @@ function RestroMenus() {
               defaultValue="all"
               name="radio-buttons-group"
               className="mt-3"
+              value={selectedfoodCate} // Controlled component
+              onChange={handlecategory} // Handle change event
             >
               <FormControlLabel
                 value="all"
@@ -263,7 +355,7 @@ function RestroMenus() {
                 label="All"
               />
               <FormControlLabel
-                value="burger"
+                value="Burgers"
                 control={
                   <Radio
                     sx={{
@@ -276,7 +368,7 @@ function RestroMenus() {
                 label="Burger"
               />
               <FormControlLabel
-                value="chicken"
+                value="Chicken"
                 control={
                   <Radio
                     sx={{
@@ -289,7 +381,7 @@ function RestroMenus() {
                 label="Chicken"
               />
               <FormControlLabel
-                value="dosa"
+                value="Dosa"
                 control={
                   <Radio
                     sx={{
@@ -306,7 +398,7 @@ function RestroMenus() {
         </div>
       </div>
       <div className="w-8/12 pl-6 bg-gray-50 mx-auto mt-4 ">
-        {menuList.map((item, index) => (
+        {FilterMenu.map((item, index) => (
           <div className="border-b-2 border-gray-200 flex justify-between ">
             <div className="w-9/12 my-1 font-playfair">
               <div>
