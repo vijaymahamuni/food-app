@@ -398,42 +398,50 @@ function RestroMenus() {
         </div>
       </div>
       <div className="w-8/12 pl-6 bg-gray-50 mx-auto mt-4 ">
-        {FilterMenu.map((item, index) => (
-          <div className="border-b-2 border-gray-200 flex justify-between ">
-            <div className="w-9/12 my-1 font-playfair">
-              <div>
-                <p className="text-lg font-bold font-playfair tex-[#424242]">
-                  {item.name}
-                </p>
-                <p className="mt-1 font-semibold ">₹{item.price}</p>
-              </div>
-              <span
-                className={`${
-                  item.rating > 3 ? "text-green-600" : "text-yellow-600"
-                }`}
-              >
-                {item.rating} ★
-              </span>
+        {FilterMenu && FilterMenu.length > 0 ? (
+          FilterMenu.map((item, index) => (
+            <div className="border-b-2 border-gray-200 flex justify-between ">
+              <div className="w-9/12 my-1 font-playfair">
+                <div>
+                  <p className="text-lg font-bold font-playfair tex-[#424242]">
+                    {item.name}
+                  </p>
+                  <p className="mt-1 font-semibold ">₹{item.price}</p>
+                </div>
+                <span
+                  className={`${
+                    item.rating > 3 ? "text-green-600" : "text-yellow-600"
+                  }`}
+                >
+                  {item.rating} ★
+                </span>
 
-              <p className="text-md py-2 pb-8">{item.description}</p>
-            </div>
-            <div>
-              <button
-                className="p-1 m-1 w-20 font-bold text-green-600 bg-white absolute my-24 ml-7 rounded-md"
-                onClick={() => AddToCart(item)}
-              >
-                ADD
-              </button>
-              <div className="p-2">
-                <img
-                  src={`http://localhost:5000/` + item.file}
-                  className="w-28 h-28 rounded-lg"
-                  alt=""
-                />
+                <p className="text-md py-2 pb-8">{item.description}</p>
+              </div>
+              <div>
+                <button
+                  className="p-1 m-1 w-20 font-bold text-green-600 bg-white absolute my-24 ml-7 rounded-md"
+                  onClick={() => AddToCart(item)}
+                >
+                  ADD
+                </button>
+                <div className="p-2">
+                  <img
+                    src={`http://localhost:5000/` + item.file}
+                    className="w-28 h-28 rounded-lg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div>
+            <h1 className="flex items-center justify-center h-screen text-gray-500 text-xl">
+              No items available
+            </h1>
           </div>
-        ))}
+        )}
         {showSuccessAlert && (
           <Stack spacing={2} className="absolute mt-36 w-7/12">
             <Alert variant="filled" severity="success" className="flex ">

@@ -13,54 +13,90 @@ const Login = ({ closePopup, switchToRegister }) => {
   const [password, setPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
 
+  const validate = (field, value) => {
+    let newErrors = { ...errors };
+    if (field === "email") {
+      if (!value.trim()) {
+        newErrors.userEmail = "Email is required";
+      } else if (
+        !value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+      ) {
+        newErrors.userEmail = "Invalid email format";
+      } else {
+        delete newErrors.userEmail;
+      }
+    }
+    if (field === "password") {
+      if (!value.trim()) {
+        newErrors.password = "Password is required";
+      } else if (value.length < 6) {
+        newErrors.password = "Password must be at least 6 characters long";
+      } else {
+        delete newErrors.password;
+      }
+    }
+    setErrors(newErrors);
+  };
   const { setUserName } = useContext(UserContext);
   const Login = async (e) => {
     e.preventDefault();
+    if (Object.keys(errors).length === 0 && userEmail && password) {
+      try {
+        const { data } = await axios.post(`${REACT_APP_HOST}/api/food/login`, {
+          userEmail,
+          password,
+        });
 
-    try {
-      const { data } = await axios.post(`${REACT_APP_HOST}/api/food/login`, {
-        userEmail,
-        password,
-      });
+        const { token, userEmail: email, userName, typeofUsers, userId } = data;
 
-      const { token, userEmail: email, userName, typeofUsers, userId } = data;
+        //Set data in localStorage only once
+        localStorage.setItem("token", token);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("admin", typeofUsers);
+        localStorage.setItem("customerId", userId);
 
-      //Set data in localStorage only once
-      localStorage.setItem("token", token);
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("admin", typeofUsers);
-      localStorage.setItem("customerId", userId);
+        setUserName(userName);
 
-      setUserName(userName);
+        // Check if user is an admin
+        if (typeofUsers === "admin") {
+          // If admin, check if they are an owner
+          const checkUser_Restro = await axios.post(
+            `${REACT_APP_HOST}/api/owner/checkOwner`,
+            {
+              ownerId: userId,
+            }
+          );
 
-      // Check if user is an admin
-      if (typeofUsers === "admin") {
-        // If admin, check if they are an owner
-        const checkUser_Restro = await axios.post(
-          `${REACT_APP_HOST}/api/owner/checkOwner`,
-          {
-            ownerId: userId,
+          if (checkUser_Restro.status === 200) {
+            navigate("/admin/addrestaurant");
+          } else if (checkUser_Restro.status === 201) {
+            navigate("/admin/restaurant");
           }
-        );
-
-        if (checkUser_Restro.status === 200) {
-          navigate("/admin/addrestaurant");
-        } else if (checkUser_Restro.status === 201) {
-          navigate("/admin/restaurant");
+        } else {
+          navigate("/my-profile");
         }
-      } else {
-        navigate("/my-profile");
-      }
 
-      closePopup();
-    } catch (error) {
-      // Improved error handling
-      console.error("Login Error:", error);
+        closePopup();
+      } catch (error) {
+        // Improved error handling
+        console.error("Login Error:", error);
+        if (error.response && error.response.status === 400) {
+          // Handle 400 Bad Request error
+          alert(
+            error.response.data.message ||
+              "Invalid credentials. Please try again."
+          );
+        } else {
+          // Handle other errors
+          alert("Something went wrong. Please try again later.");
+        }
+      }
+      setUserEmail("");
+      setPassword("");
     }
-    setUserEmail("");
-    setPassword("");
   };
 
   return (
@@ -84,7 +120,12 @@ const Login = ({ closePopup, switchToRegister }) => {
             name="email"
             placeholder="Email"
             value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
+            onChange={(e) => {
+              setUserEmail(e.target.value);
+              validate("email", e.target.value);
+            }}
+            error={!!errors.userEmail}
+            helperText={errors.userEmail}
           />
         </Box>
 
@@ -100,7 +141,10 @@ const Login = ({ closePopup, switchToRegister }) => {
             autoComplete="current-password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              validate("password", e.target.value);
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 this.setState({ message: e.target.value }, () => {
@@ -108,6 +152,8 @@ const Login = ({ closePopup, switchToRegister }) => {
                 });
               }
             }}
+            error={!!errors.password}
+            helperText={errors.password}
           />
         </Box>
 

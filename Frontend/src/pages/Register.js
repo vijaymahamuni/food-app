@@ -18,36 +18,78 @@ const Register = ({ closePopup, switchToLogin }) => {
   const [typeofUsers, setTypeofUsers] = useState("customer");
   // const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
+  const [errors, setErrors] = useState({});
 
-  const Register = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`${REACT_APP_HOST}/api/food/register`, {
-        userName,
-        userEmail,
-        password,
-        typeofUsers,
-      });
-      console.log("User added:", response.data);
-      if (response.status === 200) {
-        MySwal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Registration successful! Please log in to access your account.",
-        });
+  const validate = (field, value) => {
+    let newErrors = { ...errors };
+    if (field === "email") {
+      if (!value.trim()) {
+        newErrors.userEmail = "Email is required";
+      } else if (
+        !value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+      ) {
+        newErrors.userEmail = "Invalid email format";
+      } else {
+        delete newErrors.userEmail;
       }
-      // if (typeofUsers === "admin") {
-      //   navigate("/admin/addrestaurant");
-      // }
-      closePopup(); // Close popup after successful registration
-    } catch (error) {
-      console.error(error);
+    }
+    if (field === "password") {
+      if (!value.trim()) {
+        newErrors.password = "Password is required";
+      } else if (value.length < 6) {
+        newErrors.password = "Password must be at least 6 characters long";
+      } else {
+        delete newErrors.password;
+      }
     }
 
-    // setUserName("");
-    // setUserEmail("");
-    // setPassword("");
-    // setTypeofUsers("");
+    if (field === "name") {
+      if (!value.trim()) {
+        newErrors.userName = "Name is required";
+      } else if (value.length < 2) {
+        newErrors.userName = "Name must be at least 2 characters long";
+      } else if (!/^[a-zA-Z ]+$/.test(value)) {
+        newErrors.userName = "Only alphabets and spaces are allowed";
+      } else {
+        delete newErrors.userName;
+      }
+    }
+    setErrors(newErrors);
+  };
+  const Register = async (e) => {
+    e.preventDefault();
+    if (Object.keys(errors).length === 0 && userEmail && password) {
+      try {
+        const response = await axios.post(
+          `${REACT_APP_HOST}/api/food/register`,
+          {
+            userName,
+            userEmail,
+            password,
+            typeofUsers,
+          }
+        );
+        console.log("User added:", response.data);
+        if (response.status === 200) {
+          MySwal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Registration successful! Please log in to access your account.",
+          });
+        }
+        // if (typeofUsers === "admin") {
+        //   navigate("/admin/addrestaurant");
+        // }
+        closePopup(); // Close popup after successful registration
+      } catch (error) {
+        console.error(error);
+      }
+
+      // setUserName("");
+      // setUserEmail("");
+      // setPassword("");
+      // setTypeofUsers("");
+    }
   };
 
   const handleChange = (event) => {
@@ -75,7 +117,12 @@ const Register = ({ closePopup, switchToLogin }) => {
                 name="fullname"
                 placeholder="Full Name"
                 value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                  validate("name", e.target.value);
+                }}
+                error={!!errors.userName}
+                helperText={errors.userName}
               />
             </Box>
           </div>
@@ -92,7 +139,12 @@ const Register = ({ closePopup, switchToLogin }) => {
                 name="email"
                 placeholder="Email Address"
                 value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
+                onChange={(e) => {
+                  setUserEmail(e.target.value);
+                  validate("email", e.target.value);
+                }}
+                error={!!errors.userEmail}
+                helperText={errors.userEmail}
               />
             </Box>
           </div>
@@ -109,7 +161,12 @@ const Register = ({ closePopup, switchToLogin }) => {
                 autoComplete="current-password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validate("password", e.target.value);
+                }}
+                error={!!errors.password}
+                helperText={errors.password}
               />
             </Box>
           </div>
@@ -145,9 +202,9 @@ const Register = ({ closePopup, switchToLogin }) => {
                 LOGIN
               </span>{" "}
             </h1>
-            <h1 className="mt-6 text-[#f84260] cursor-pointer">
+            {/* <h1 className="mt-6 text-[#f84260] cursor-pointer">
               FORGOT PASSWORD
-            </h1>
+            </h1> */}
           </div>
         </div>
       </div>
