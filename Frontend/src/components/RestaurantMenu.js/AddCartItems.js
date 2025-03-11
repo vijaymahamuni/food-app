@@ -110,11 +110,17 @@ const AddCartItems = () => {
 
   const handle_clearCart = () => {
     dispatch(clearItems());
+    const removeAllItemsApi = axios.delete(
+      `${REACT_APP_HOST}/api/cart/removeCartItems`
+    );
   };
 
   const DeleteCartItems = (_id) => {
     // console.log("removeId", _id);
     dispatch(removeItems(_id));
+    const response = axios.delete(
+      `${REACT_APP_HOST}/api/cart/removeOneitem/${_id}`
+    );
   };
   return (
     <div>

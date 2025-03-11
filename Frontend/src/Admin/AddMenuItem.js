@@ -18,7 +18,7 @@ const AddMenuItem = ({ addNewMenu }) => {
   const [isSeasonal, setIsSeasonal] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
 
-  const quantity = 1;
+  const quantity = 0;
   // const [customerEmail,setCustomerEmail]=useState();
   const Status = "Pending";
   const availabilty = "IN STOCK";

@@ -75,4 +75,16 @@ AddcartItems.delete("/removeCartItems", async (req, res) => {
     res.status(500).json({ message: error });
   }
 });
+// delete Particular Items only
+AddcartItems.delete("/removeOneitem/:id", async (req, res) => {
+  const RemoveId = req.params.id;
+  // console.log("CancelId", RemoveId);
+  try {
+    const RemoveIdItem = await AddCartMenuItems.deleteOne({ _id: RemoveId });
+    res.json({ message: "Remove Item Succesfully" });
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 module.exports = AddcartItems;

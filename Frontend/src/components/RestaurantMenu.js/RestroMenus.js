@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 function RestroMenus() {
   const [menuList, setMenuList] = useState([]);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showAlreadyexit, setShowAlreadyexit] = useState(false);
   const [selectedValue, setSelectedValue] = useState("all");
   const [selectedfoodCate, setSelectedfoodCate] = useState("all");
   const [selectedtoprated, setSelectedtoprated] = useState("all");
@@ -43,61 +44,72 @@ function RestroMenus() {
   }, []);
   const dispatch = useDispatch();
   const CartItemsData = useSelector((store) => store.cart.items);
-  console.log("CartItemsData", CartItemsData.length);
+  // console.log("CartItemsData", CartItemsData.length);
   const prevCartResId = CartItemsData[0]?.restaurantId;
+  console.log("check check already menu there or not :", CartItemsData);
 
   const AddToCart = async (item) => {
-    console.log("getOriginal Cartitems", item.restaurantId);
-    const sltitemResId = item.restaurantId;
-    if (CartItemsData.length !== 0 && prevCartResId !== sltitemResId) {
-      Swal.fire({
-        title: "Items Already in Cart?",
-        text: "your cart contains items from other restaurant.Would you like to reset your cart for adding items from this restaurant?",
-        showCancelButton: true,
-        confirmButtonText: "YES, START AFRESH",
-        cancelButtonText: "NO",
-        reverseButtons: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Swal.fire("Done!", "Your action has been confirmed.", "success");
-          // Perform confirmed action here
+    console.log("getOriginal Cartitems", item.menuId);
 
-          //if both previous and curr add items not same then clear prev Cartitems in redux and api and then add this new items
-          dispatch(clearItems());
-          const removeAllItemsApi = axios.delete(
-            `${REACT_APP_HOST}/api/cart/removeCartItems`
-          );
+    const isAlreadyInCart = CartItemsData.some(
+      (cartItem) => cartItem._id === item._id || cartItem.menuId === item._id
+    );
+    if (isAlreadyInCart) {
+      console.log("already Exist");
+      setShowAlreadyexit(!showAlreadyexit);
+    } else {
+      const sltitemResId = item.restaurantId;
 
-          //update redux and api new cartItems data
+      if (CartItemsData.length !== 0 && prevCartResId !== sltitemResId) {
+        Swal.fire({
+          title: "Items Already in Cart?",
+          text: "your cart contains items from other restaurant.Would you like to reset your cart for adding items from this restaurant?",
+          showCancelButton: true,
+          confirmButtonText: "YES, START AFRESH",
+          cancelButtonText: "NO",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Swal.fire("Done!", "Your action has been confirmed.", "success");
+            // Perform confirmed action here
+
+            //if both previous and curr add items not same then clear prev Cartitems in redux and api and then add this new items
+            dispatch(clearItems());
+            const removeAllItemsApi = axios.delete(
+              `${REACT_APP_HOST}/api/cart/removeCartItems`
+            );
+
+            //update redux and api new cartItems data
+            dispatch(addItems(item));
+            const addCartItemsApi = axios.post(
+              `${REACT_APP_HOST}/api/cart/addCartItem`,
+              {
+                item,
+                CurrCustId,
+              }
+            );
+            setShowSuccessAlert(true); // Show success alert
+
+            // console.log(removeAllItemsApi.data.message);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // Swal.fire("Cancelled", "Your action has been cancelled.", "error");
+            // Perform cancel action here
+          }
+        });
+      } else {
+        try {
           dispatch(addItems(item));
-          const addCartItemsApi = axios.post(
+          const checkUser_Restro = await axios.post(
             `${REACT_APP_HOST}/api/cart/addCartItem`,
             {
               item,
               CurrCustId,
             }
           );
+          console.log(checkUser_Restro);
           setShowSuccessAlert(true); // Show success alert
-
-          // console.log(removeAllItemsApi.data.message);
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          // Swal.fire("Cancelled", "Your action has been cancelled.", "error");
-          // Perform cancel action here
-        }
-      });
-    } else {
-      try {
-        dispatch(addItems(item));
-        const checkUser_Restro = await axios.post(
-          `${REACT_APP_HOST}/api/cart/addCartItem`,
-          {
-            item,
-            CurrCustId,
-          }
-        );
-        console.log(checkUser_Restro);
-        setShowSuccessAlert(true); // Show success alert
-      } catch (error) {}
+        } catch (error) {}
+      } // Add item to CartItemsData or perform some action here
     }
   };
   const navigate = useNavigate();
@@ -400,7 +412,10 @@ function RestroMenus() {
       <div className="w-8/12 pl-6 bg-gray-50 mx-auto mt-4 ">
         {FilterMenu && FilterMenu.length > 0 ? (
           FilterMenu.map((item, index) => (
-            <div className="border-b-2 border-gray-200 flex justify-between ">
+            <div
+              className="border-b-2 border-gray-200 flex justify-between "
+              key={index}
+            >
               <div className="w-9/12 my-1 font-playfair">
                 <div>
                   <p className="text-lg font-bold font-playfair tex-[#424242]">
@@ -447,6 +462,21 @@ function RestroMenus() {
             <Alert variant="filled" severity="success" className="flex ">
               <div className="flex justify-between ">
                 <h1 className=" font-semibold items-start">1 item added</h1>
+                <h1
+                  className="font-semibold  cursor-pointer items-end ml-[620px]"
+                  onClick={ViewCartpage}
+                >
+                  VIEW CART <LocalMallIcon fontSize="medium" />
+                </h1>
+              </div>
+            </Alert>
+          </Stack>
+        )}
+        {showAlreadyexit && (
+          <Stack spacing={2} className="absolute mt-36 w-7/12">
+            <Alert variant="filled" severity="success" className="flex ">
+              <div className="flex justify-between ">
+                <h1 className=" font-semibold items-start">Already in cart.</h1>
                 <h1
                   className="font-semibold  cursor-pointer items-end ml-[620px]"
                   onClick={ViewCartpage}

@@ -65,6 +65,25 @@ AddnewMenu.get("/getMenulist/:resId", async (req, res) => {
     res.json({ message: error });
   }
 });
+
+// update menuItem Quantity
+AddnewMenu.put("/updatequantity", async (req, res) => {
+  const { id } = req.body;
+  const { updateQuan1 } = req.body;
+
+  try {
+    const updateQuantity = await AddMenuItems.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      { $set: { quantity: updateQuan1 } },
+      { new: true }
+    );
+    res.json({ message: "Updated Successfully", data: updateQuantity });
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
 AddnewMenu.get("/AllMenulist/:ownerId", async (req, res) => {
   const id = req.params.ownerId;
   try {
