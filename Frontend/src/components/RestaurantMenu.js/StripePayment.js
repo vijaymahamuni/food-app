@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { InputLabel } from "@mui/material";
 import Select from "@mui/material/Select";
-const StripePayment = ({ cartItems, addressDetails }) => {
+const StripePayment = ({ cartItems, addressDetails, setIsPopupOpen }) => {
   // console.log("addressDetails", addressDetails);
   // console.log("cartItems", cartItems);
   const ownerId = localStorage.getItem("customerId");
@@ -37,8 +37,9 @@ const StripePayment = ({ cartItems, addressDetails }) => {
     setPaymentMethod(event.target.value);
     // alert(event.target.value);
     if (event.target.value === "cash") {
-      alert("cash");
-      handlePayment();
+      // alert("cash");
+      // handlePayment();
+      setIsPopupOpen();
     } else {
       alert("Phonepay/Gpay/card");
     }

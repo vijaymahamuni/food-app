@@ -20,6 +20,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import StripePayment from "./StripePayment";
+import Popup from "./Popup";
 const stripePromise = loadStripe(
   "pk_test_51QDra5DFEtVBuZZoInYFpSlSov8fwbrZlUpf3uHtzh8wyOoAsMDkZD5RO70SjlAlIeG89Ez5bfdTYcGxAU8hH0Yz00LRq3nc6A"
 );
@@ -30,6 +31,7 @@ const AddCartItems = () => {
   const MySwal = withReactContent(Swal);
   const [addnewaddr, setAddnewAddr] = useState(false);
   const [addressDetails, setAddressDetails] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleIncre = (id) => {
     setIncrements((prevIncrements) => ({
@@ -121,6 +123,16 @@ const AddCartItems = () => {
     const response = axios.delete(
       `${REACT_APP_HOST}/api/cart/removeOneitem/${_id}`
     );
+  };
+
+  const handleSelect = ({ name, address, addType, id }) => {
+    console.log("select address details ", name, address, addType, id);
+    setSelectedId(id); // Set the selected box ID
+  };
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handlePopup = () => {
+    setIsPopupOpen(true);
   };
   return (
     <div>
@@ -234,6 +246,7 @@ const AddCartItems = () => {
                         <StripePayment
                           cartItems={CartItemsData}
                           addressDetails={addressDetails}
+                          setIsPopupOpen={handlePopup}
                         />
                       </Elements>
                     </button>
@@ -259,7 +272,21 @@ const AddCartItems = () => {
                 >
                   {addressDetails.map((item) => (
                     <Paper elevation={2} key={item._id}>
-                      <div className="p-4">
+                      <div
+                        className={`p-4 transition-all duration-300 ${
+                          selectedId === item._id
+                            ? "bg-blue-100 border-blue-400"
+                            : "bg-white"
+                        } border border-gray-300 rounded-md`}
+                        onClick={() =>
+                          handleSelect({
+                            id: item._id,
+                            addType: item.addType,
+                            name: item.name,
+                            address: `${item.streetAddress}, ${item.city}, ${item.state} - ${item.pincode}`,
+                          })
+                        }
+                      >
                         <>
                           <div className="flex">
                             {item.addType === "Home" ? (
@@ -276,11 +303,22 @@ const AddCartItems = () => {
                             <p>{item.streetAddress}</p>
                             <p>{item.state}</p>
                             <p>
-                              {item.pincode},{item.city}
+                              {item.city},{item.pincode}
                             </p>
                           </div>
                           <div className="mt-4">
-                            <button className="p-1 ml-10 w-32 border-[1px] font-bold border-button font-playfair text-primary">
+                            <button
+                              className="p-1 ml-10 w-32 border-[1px] font-bold border-button font-playfair text-primary"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent parent div from getting clicked
+                                handleSelect({
+                                  id: item._id,
+                                  addType: item.addType,
+                                  name: item.name,
+                                  address: `${item.streetAddress}, ${item.city}, ${item.state} - ${item.pincode}`,
+                                });
+                              }}
+                            >
                               SELECT
                             </button>
                           </div>
@@ -347,6 +385,21 @@ const AddCartItems = () => {
           </div>
         )}
       </div>
+
+      <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
+        <h2 className="text-xl font-bold mb-2">Popup Title</h2>
+        <p className="text-gray-600">
+          This is an animated popup example using Framer Motion!
+        </p>
+        <div className="mt-4 flex justify-end">
+          <button
+            onClick={() => setIsPopupOpen(false)}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          >
+            Close
+          </button>
+        </div>
+      </Popup>
     </div>
   );
 };
