@@ -20,6 +20,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import StripePayment from "./StripePayment";
+
 const stripePromise = loadStripe(
   "pk_test_51QDra5DFEtVBuZZoInYFpSlSov8fwbrZlUpf3uHtzh8wyOoAsMDkZD5RO70SjlAlIeG89Ez5bfdTYcGxAU8hH0Yz00LRq3nc6A"
 );
@@ -30,6 +31,7 @@ const AddCartItems = () => {
   const MySwal = withReactContent(Swal);
   const [addnewaddr, setAddnewAddr] = useState(false);
   const [addressDetails, setAddressDetails] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleIncre = (id) => {
     setIncrements((prevIncrements) => ({
@@ -122,9 +124,23 @@ const AddCartItems = () => {
       `${REACT_APP_HOST}/api/cart/removeOneitem/${_id}`
     );
   };
+
+  const handleSelect = ({ name, address, addType, id }) => {
+    console.log("select address details ", name, address, addType, id);
+    setSelectedId(id); // Set the selected box ID
+    setAfterAddress(true);
+  };
+  const [selectedId, setSelectedId] = useState(null);
+  const [afterAddress, setAfterAddress] = useState(false);
+  const handlePopup = () => {
+    setIsPopupOpen(true);
+  };
   return (
     <div>
       {addnewaddr && <AddAddress close_popup={AddnewAddress} />}
+      {/* {
+        afterAddress?(<h1>Welcome to Foodie App</h1>):(<h1></h1>)
+      } */}
 
       <div className="flex text-textColor">
         {CartItemsData.length !== 0 ? (
@@ -234,6 +250,7 @@ const AddCartItems = () => {
                         <StripePayment
                           cartItems={CartItemsData}
                           addressDetails={addressDetails}
+                          setIsPopupOpen={handlePopup}
                         />
                       </Elements>
                     </button>
@@ -241,89 +258,122 @@ const AddCartItems = () => {
                 </div>
               </div>
             </div>
-            <div className="p-6 w-[70%]">
-              <h1 className="text-2xl font-bold font-playfair text-center">
-                Choose Delivery Address
-              </h1>
-              <div className="mt-4 ">
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    "& > :not(style)": {
-                      m: 1,
-                      width: 260,
-                      height: 200,
-                    },
-                  }}
-                >
-                  {addressDetails.map((item) => (
-                    <Paper elevation={2} key={item._id}>
-                      <div className="p-4">
-                        <>
+            {afterAddress ? (
+              <>
+                <h1>Hello</h1>
+              </>
+            ) : (
+              <>
+                <div className="p-6 w-[70%]">
+                  <h1 className="text-2xl font-bold font-playfair text-center">
+                    Choose Delivery Address
+                  </h1>
+                  <div className="mt-4 ">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        "& > :not(style)": {
+                          m: 1,
+                          width: 260,
+                          height: 200,
+                        },
+                      }}
+                    >
+                      {addressDetails.map((item) => (
+                        <Paper elevation={2} key={item._id}>
+                          <div
+                            className={`p-4 transition-all duration-300 ${
+                              selectedId === item._id
+                                ? "bg-blue-100 border-blue-400"
+                                : "bg-white"
+                            } border border-gray-300 rounded-md`}
+                            onClick={() =>
+                              handleSelect({
+                                id: item._id,
+                                addType: item.addType,
+                                name: item.name,
+                                address: `${item.streetAddress}, ${item.city}, ${item.state} - ${item.pincode}`,
+                              })
+                            }
+                          >
+                            <>
+                              <div className="flex">
+                                {item.addType === "Home" ? (
+                                  <HomeIcon />
+                                ) : (
+                                  <BusinessIcon />
+                                )}
+                                <p className="ml-4 text-xl font-playfair">
+                                  {item.addType}
+                                </p>
+                              </div>
+                              <div className="ml-10 font-montserrat">
+                                <p>{item.name}</p>
+                                <p>{item.streetAddress}</p>
+                                <p>{item.state}</p>
+                                <p>
+                                  {item.city},{item.pincode}
+                                </p>
+                              </div>
+                              <div className="mt-4">
+                                <button
+                                  className="p-1 ml-10 w-32 border-[1px] font-bold border-button font-playfair text-primary"
+                                  onClick={(e) => {
+                                    e.stopPropagation(); // Prevent parent div from getting clicked
+                                    handleSelect({
+                                      id: item._id,
+                                      addType: item.addType,
+                                      name: item.name,
+                                      address: `${item.streetAddress}, ${item.city}, ${item.state} - ${item.pincode}`,
+                                    });
+                                  }}
+                                >
+                                  SELECT
+                                </button>
+                              </div>
+                            </>
+                          </div>
+                        </Paper>
+                      ))}
+                    </Box>
+                  </div>
+                  <div className="mt-4 flex justify-center items-center">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        "& > :not(style)": {
+                          m: 1,
+                          width: 230,
+                          height: 120,
+                        },
+                      }}
+                    >
+                      <Paper elevation={2}>
+                        <div className="p-4">
                           <div className="flex">
-                            {item.addType === "Home" ? (
-                              <HomeIcon />
-                            ) : (
-                              <BusinessIcon />
-                            )}
-                            <p className="ml-4 text-xl font-playfair">
-                              {item.addType}
+                            <AddLocationAltIcon />
+                            <p className="ml-4 text-lg font-playfair">
+                              Add New Address
                             </p>
                           </div>
-                          <div className="ml-10 font-montserrat">
-                            <p>{item.name}</p>
-                            <p>{item.streetAddress}</p>
-                            <p>{item.state}</p>
-                            <p>
-                              {item.pincode},{item.city}
-                            </p>
-                          </div>
+                          <div className="ml-10"></div>
                           <div className="mt-4">
-                            <button className="p-1 ml-10 w-32 border-[1px] font-bold border-button font-playfair text-primary">
-                              SELECT
+                            <button
+                              className="p-1 ml-10 w-32 text-white font-playfair bg-primary"
+                              onClick={AddnewAddress}
+                            >
+                              ADD
                             </button>
                           </div>
-                        </>
-                      </div>
-                    </Paper>
-                  ))}
-                </Box>
-              </div>
-              <div className="mt-4 flex justify-center items-center">
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    "& > :not(style)": {
-                      m: 1,
-                      width: 230,
-                      height: 120,
-                    },
-                  }}
-                >
-                  <Paper elevation={2}>
-                    <div className="p-4">
-                      <div className="flex">
-                        <AddLocationAltIcon />
-                        <p className="ml-4 text-lg font-playfair">
-                          Add New Address
-                        </p>
-                      </div>
-                      <div className="ml-10"></div>
-                      <div className="mt-4">
-                        <button
-                          className="p-1 ml-10 w-32 text-white font-playfair bg-primary"
-                          onClick={AddnewAddress}
-                        >
-                          ADD
-                        </button>
-                      </div>
-                    </div>
-                  </Paper>
-                </Box>{" "}
-              </div>
-            </div>
+                        </div>
+                      </Paper>
+                    </Box>{" "}
+                  </div>
+                </div>
+              </>
+            )}
           </>
         ) : (
           <div className="flex items-center justify-center h-[80vh] w-6/12 mx-auto">
