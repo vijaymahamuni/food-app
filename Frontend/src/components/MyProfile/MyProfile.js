@@ -14,7 +14,7 @@ import Favorites from "./Favorites";
 import Addresses from "./Addresses";
 function MyProfile() {
   const [open, setOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState("Orders");
   const Menus = [
     { title: "Orders", src: <ShoppingBagIcon /> },
     { title: "Favorites", src: <FavoriteIcon /> },
@@ -28,6 +28,9 @@ function MyProfile() {
   // const handleFavourites = () => {
   //   navigate("/my-profile/Orders");
   // };
+  const handle_selectmenu = (title) => {
+    setSelectedMenu(title);
+  };
   return (
     <div className="flex border-r-2 ">
       <div
@@ -52,7 +55,7 @@ function MyProfile() {
                 className={`${
                   open && "hidden"
                 } origin-left duration-200 font-playfair text-lg`}
-                onClick={() => setSelectedMenu(menu.title)}
+                onClick={() => handle_selectmenu(menu.title)}
               >
                 {menu.title}
               </span>

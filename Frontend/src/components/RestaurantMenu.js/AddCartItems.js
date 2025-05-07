@@ -20,6 +20,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import StripePayment from "./StripePayment";
+import OrderSteps from "./OrderSteps";
 
 const stripePromise = loadStripe(
   "pk_test_51QDra5DFEtVBuZZoInYFpSlSov8fwbrZlUpf3uHtzh8wyOoAsMDkZD5RO70SjlAlIeG89Ez5bfdTYcGxAU8hH0Yz00LRq3nc6A"
@@ -32,7 +33,8 @@ const AddCartItems = () => {
   const [addnewaddr, setAddnewAddr] = useState(false);
   const [addressDetails, setAddressDetails] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const [selectAddress, setSelectAddress] = useState();
+  const [selectType, setSelectType] = useState();
   const handleIncre = (id) => {
     setIncrements((prevIncrements) => ({
       ...prevIncrements,
@@ -129,6 +131,11 @@ const AddCartItems = () => {
     console.log("select address details ", name, address, addType, id);
     setSelectedId(id); // Set the selected box ID
     setAfterAddress(true);
+    setSelectAddress(address);
+    setSelectType(addType);
+  };
+  const prvPage = () => {
+    setAfterAddress(false);
   };
   const [selectedId, setSelectedId] = useState(null);
   const [afterAddress, setAfterAddress] = useState(false);
@@ -260,7 +267,11 @@ const AddCartItems = () => {
             </div>
             {afterAddress ? (
               <>
-                <h1>Hello</h1>
+                <OrderSteps
+                  addressData={selectAddress}
+                  prvPage={prvPage}
+                  addressType={selectType}
+                />
               </>
             ) : (
               <>

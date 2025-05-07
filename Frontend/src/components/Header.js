@@ -77,7 +77,7 @@ const Header = () => {
     if (getUserType === "admin") {
       navigate("/admin/restaurant");
     } else {
-      navigate("/my-profile");
+      navigate("/my-profile/orders");
     }
   };
   const CartItemsData = useSelector((store) => store.cart.items);
