@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import { REACT_APP_HOST } from "../../utils/Host_pass";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { clearItems } from "../../utils/cartSlice";
+import Swal from "sweetalert2";
 
-const PaymentMethodPage = ({ handlePayProcess }) => {
+const PaymentMethodPage = ({ handlePayProcess, cartItems, addressDetails }) => {
   const [method, setMethod] = useState("");
   const [paymentDetails, setPaymentDetails] = useState({
     upiId: "",
@@ -8,17 +14,47 @@ const PaymentMethodPage = ({ handlePayProcess }) => {
     expiry: "",
     cvv: "",
   });
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setPaymentDetails({ ...paymentDetails, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e) => {
+  const ownerId = localStorage.getItem("customerId");
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const yourDeleteFunction = () => {
+    // Your delete logic goes here (e.g., API call, state update)
+    console.log("Item deleted!");
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle payment process
-    alert(`Payment method: ${method}`);
+    // alert(`Payment method: ${method}`);
     handlePayProcess();
     console.log(paymentDetails);
+    const response = await axios.post(
+      `${REACT_APP_HOST}/api/order/OrderItems`,
+      {
+        ownerId,
+        token,
+        cartItems,
+      }
+    );
+    Swal.fire({
+      title: "Order Confirmed!",
+      text: "Your order has been successfully placed.",
+      icon: "success",
+      confirmButtonText: "Go to Orders",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/my-profile/orders"); // Replace with your actual order list route
+      }
+    });
+    dispatch(clearItems());
+    const removeAllItemsApi = await axios.delete(
+      `${REACT_APP_HOST}/api/cart/removeCartItems`
+    );
+    // navigate("/my-profile/orders");
   };
 
   return (

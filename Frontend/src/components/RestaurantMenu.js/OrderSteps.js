@@ -5,6 +5,9 @@ import "./OrderSteps.css";
 import PaymentPage from "./PaymentPage";
 import OrderConfirm from "./OrderConfirm";
 const OrderSteps = ({ addressData, prvPage, addressType }) => {
+  const handleSuccessPayment = () => {
+    setShowNext(true);
+  };
   const steps = [
     {
       title: "Address",
@@ -23,6 +26,7 @@ const OrderSteps = ({ addressData, prvPage, addressType }) => {
           addressdata={addressData}
           addressType={addressType}
           prvPage={prvPage}
+          handleSuccessPayment={handleSuccessPayment}
         />
       ),
     },
@@ -33,8 +37,10 @@ const OrderSteps = ({ addressData, prvPage, addressType }) => {
   ];
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
+  const [showNext, setShowNext] = useState(true);
 
   const next = () => {
+    setShowNext(false);
     if (current < steps.length - 1) {
       setCurrent(current + 1);
     } else {
@@ -43,6 +49,7 @@ const OrderSteps = ({ addressData, prvPage, addressType }) => {
   };
 
   const prev = () => {
+    setShowNext(true);
     if (current > 0) {
       setCurrent(current - 1);
     }
@@ -148,7 +155,13 @@ const OrderSteps = ({ addressData, prvPage, addressType }) => {
             </Button>
           )}
           {current < steps.length - 1 && (
-            <Button onClick={next} style={buttonStyle}>
+            <Button
+              onClick={next}
+              style={{
+                ...buttonStyle,
+                display: showNext ? "inline-block" : "none",
+              }}
+            >
               Next
             </Button>
           )}

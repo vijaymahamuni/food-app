@@ -251,7 +251,7 @@ const AddCartItems = () => {
                       Clear Cart
                     </button>
                   </div>
-                  <div>
+                  {/* <div>
                     <button>
                       <Elements stripe={stripePromise}>
                         <StripePayment
@@ -261,7 +261,7 @@ const AddCartItems = () => {
                         />
                       </Elements>
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

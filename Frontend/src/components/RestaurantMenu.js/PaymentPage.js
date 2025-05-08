@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import PaymentMethodPage from "./PaymentMethodPage";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useSelector } from "react-redux";
 
-function PaymentPage() {
+function PaymentPage({ handleSuccessPayment }) {
   const [showPayment, setShowPayment] = useState(false);
   const [showPayDone, setShowPayDone] = useState(false);
+  const CartItemsData = useSelector((store) => store.cart.items);
 
   const handlePayProcess = () => {
     setShowPayDone(true);
+    handleSuccessPayment();
   };
   return (
     <div>
@@ -28,7 +31,10 @@ function PaymentPage() {
             PROCEED TO PAY
           </button>
           {showPayment && (
-            <PaymentMethodPage handlePayProcess={handlePayProcess} />
+            <PaymentMethodPage
+              handlePayProcess={handlePayProcess}
+              cartItems={CartItemsData}
+            />
           )}{" "}
         </>
       ) : (

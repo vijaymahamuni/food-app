@@ -1,13 +1,15 @@
 import axios from "axios";
 import { REACT_APP_HOST } from "../../utils/Host_pass";
 // import UserContext from "../../utils/UserContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // import Accordion from "@mui/material/Accordion";
 // import AccordionSummary from "@mui/material/AccordionSummary";
 // import AccordionDetails from "@mui/material/AccordionDetails";
 // import Typography from "@mui/material/Typography";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import OrderDetails from "./OrderDetails";
 import { setOrders } from "../../utils/orderSlice";
 const Orders = () => {
   // const { loggedInUser } = useContext(UserContext);
@@ -29,9 +31,32 @@ const Orders = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const yourDeleteFunction = (id) => {
+    // Your delete logic goes here (e.g., API call, state update)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // ✅ Call your custom delete function here
+        CancelOrder(id);
 
+        Swal.fire({
+          title: "Canceled!",
+          text: "Your order has been canceled.",
+          icon: "success",
+        });
+      }
+    });
+  };
   const CancelOrder = (id) => {
     console.log("cancelId", id);
+
     const cancelOrder = getOrderList.map((item) => {
       return {
         ...item,
@@ -52,18 +77,23 @@ const Orders = () => {
     const response = axios.delete(
       `${REACT_APP_HOST}/api/order/delOrderCancel/${CurrCancelId}`
     );
-    console.log(response.data.message);
+    // console.log(response.data.message);
     dispatch(setOrders(cancelOrder));
   };
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   return (
-    <div className="w-8/12  mx-auto">
+    <div className="w-8/12  mx-auto ">
       <h1 className="text-2xl font-bold text-center">My Orders</h1>
       {getOrderList.map((order) => (
         <div key={order._id}>
           {order.orderItems.map((item) => (
-            <div key={item._id}>
-              <div className="flex justify-between mt-2 p-4 bg-gray-50">
+            <div
+              key={item._id}
+              onClick={() => setSelectedOrder(item)}
+              className="bg-white shadow-md rounded-xl p-4 cursor-pointer hover:scale-[1.02] transition-all duration-200 mt-4"
+            >
+              <div className="flex justify-between ">
                 {/* Left side: Image and Text */}
                 <div className="flex">
                   <img
@@ -98,7 +128,7 @@ const Orders = () => {
                   {item.Status === "Pending" ? (
                     <button
                       className="p-1 ml-6 w-[120px] text-white bg-[#f84260] mt-2 font-bold rounded-sm text-sm"
-                      onClick={() => CancelOrder(item._id)}
+                      onClick={() => yourDeleteFunction(item._id)}
                     >
                       Cancel
                     </button>
@@ -111,6 +141,12 @@ const Orders = () => {
           ))}
         </div>
       ))}
+      {selectedOrder && (
+        <OrderDetails
+          order={selectedOrder}
+          onClose={() => setSelectedOrder(null)}
+        />
+      )}
     </div>
   );
 };
