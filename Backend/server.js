@@ -27,7 +27,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:8080",
-      "https://food-app-backend-41z6.onrender.com",
+      "https://food-app-frontend-kcj0.onrender.com",
     ],
     credentials: true,
   })
