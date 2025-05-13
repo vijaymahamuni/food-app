@@ -442,7 +442,9 @@ function RestroMenus() {
                 </button>
                 <div className="p-2">
                   <img
-                    src={`http://localhost:5000/` + item.file}
+                    src={
+                      `https://food-app-backend-41z6.onrender.com/` + item.file
+                    }
                     className="w-28 h-28 rounded-lg"
                     alt=""
                   />

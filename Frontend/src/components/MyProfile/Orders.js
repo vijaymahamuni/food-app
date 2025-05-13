@@ -97,7 +97,9 @@ const Orders = () => {
                 {/* Left side: Image and Text */}
                 <div className="flex">
                   <img
-                    src={`http://localhost:5000/` + item.file}
+                    src={
+                      `https://food-app-backend-41z6.onrender.com/` + item.file
+                    }
                     alt="menuImg"
                     className="w-16 h-16 rounded-lg"
                   />

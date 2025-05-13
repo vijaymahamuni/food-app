@@ -16,10 +16,20 @@ const app = express();
 app.use(express.json());
 app.use(express.static("uploads"));
 
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // Allow only the React frontend
+//     origin: "http://localhost:8080", // Allow only the React frontend
+//   })
+// );
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow only the React frontend
-    origin: "http://localhost:8080", // Allow only the React frontend
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:8080",
+      "https://food-app-backend-41z6.onrender.com",
+    ],
+    credentials: true,
   })
 );
 
