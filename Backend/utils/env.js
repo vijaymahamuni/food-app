@@ -1,3 +1,5 @@
 MY_DOMAIN = "http://localhost:3000/";
+JWT_SECRET="r_d_g_m_a_v1112#";
 SCRT_STRIPEKEY =
   "sk_test_51QDra5DFEtVBuZZoXEtjwj7BaPbfeLk00SvDTTXGjh9ZWsmAcJoKlQS4JTFGrdkR1ad9SIHHCQy708qdBz0S3wAv00HH44xShr";
+

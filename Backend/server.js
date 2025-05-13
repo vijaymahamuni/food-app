@@ -32,7 +32,6 @@ app.use(
     credentials: true,
   })
 );
-
 // MongoDB connection
 connectDB();
 
