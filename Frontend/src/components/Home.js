@@ -8,6 +8,9 @@ import Shimmer from "./Shimmer";
 import RestaurantCard from "./RestaurantCard";
 import { useDispatch, useSelector } from "react-redux";
 import { setRestros } from "../utils/restaurantSlice";
+import BoxShimmer from "./Shimmer/BoxShimmer";
+import HomeShimmer from "./Shimmer/HomeShimmer";
+import HomeShimmerList from "./Shimmer/HomeShimmerList";
 function Home() {
   // const [restaurantList, setRestaurantList] = useState([]);
   const getFavtdata = useSelector((state) => state.restaurant.restaurants);
@@ -95,7 +98,7 @@ function Home() {
               // </Link>
             ))
           ) : (
-            <Shimmer />
+            <HomeShimmerList />
           )}
         </div>
       </div>

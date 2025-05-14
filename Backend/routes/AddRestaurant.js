@@ -98,16 +98,15 @@ AddnewRestro.get("/getRestrodata/:ownerId", async (req, res) => {
 
 AddnewRestro.put("/updateFavt/:likedId", async (req, res) => {
   const likedId = req.params.likedId;
-  const { newLikedStatus } = req.body;
-  console.log(newLikedStatus);
-  console.log("backend_likedStatus", likedId, newLikedStatus);
+  const { liked } = req.body;
+  console.log("backend_likedStatus", likedId, liked);
 
   try {
     const updateFavt = await AddRestroData.findOneAndUpdate(
       {
         _id: likedId,
       },
-      { $set: { liked: newLikedStatus } },
+      { $set: { liked: liked } },
       { new: true }
     );
     res.json({ message: "Updated Successfully", data: updateFavt });

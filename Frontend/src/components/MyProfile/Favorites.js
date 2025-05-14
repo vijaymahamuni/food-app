@@ -6,6 +6,7 @@ import Shimmer from "../Shimmer";
 import RestaurantCard from "../RestaurantCard";
 import { setFavts } from "../../utils/favoriteSlice";
 import { setRestros } from "../../utils/restaurantSlice";
+import HomeShimmerList from "../Shimmer/HomeShimmerList";
 
 const Favorites = () => {
   // const [favtList, setFavtList] = useState([]);
@@ -37,7 +38,7 @@ const Favorites = () => {
           .filter((item) => item.liked === "true")
           .map((item) => <RestaurantCard resData={item} key={item._id} />)
       ) : (
-        <Shimmer />
+        <HomeShimmerList />
       )}
     </div>
   );

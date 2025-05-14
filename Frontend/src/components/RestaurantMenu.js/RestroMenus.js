@@ -46,7 +46,7 @@ function RestroMenus() {
   const CartItemsData = useSelector((store) => store.cart.items);
   // console.log("CartItemsData", CartItemsData.length);
   const prevCartResId = CartItemsData[0]?.restaurantId;
-  console.log("check check already menu there or not :", CartItemsData);
+  console.log("check already menu there or not :", CartItemsData);
 
   const AddToCart = async (item) => {
     console.log("getOriginal Cartitems", item.menuId);

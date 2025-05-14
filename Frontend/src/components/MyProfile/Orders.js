@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import OrderDetails from "./OrderDetails";
 import { setOrders } from "../../utils/orderSlice";
+import ListShimmer from "../Shimmer/ListShimmer";
 const Orders = () => {
   // const { loggedInUser } = useContext(UserContext);
   const ownerId = localStorage.getItem("customerId");
@@ -85,64 +86,74 @@ const Orders = () => {
   return (
     <div className="w-8/12  mx-auto ">
       <h1 className="text-2xl font-bold text-center">My Orders</h1>
-      {getOrderList.map((order) => (
-        <div key={order._id}>
-          {order.orderItems.map((item) => (
-            <div
-              key={item._id}
-              onClick={() => setSelectedOrder(item)}
-              className="bg-white shadow-md rounded-xl p-4 cursor-pointer hover:scale-[1.02] transition-all duration-200 mt-4"
-            >
-              <div className="flex justify-between ">
-                {/* Left side: Image and Text */}
-                <div className="flex">
-                  <img
-                    src={
-                      `https://food-app-backend-41z6.onrender.com/` + item.file
-                    }
-                    alt="menuImg"
-                    className="w-16 h-16 rounded-lg"
-                  />
-                  <div className="ml-6">
-                    <h1 className="text-md font-semibold">{item.name}</h1>
-                    <h1 className="mt-2">₹{item.price}</h1>
+      {getOrderList.length === 0 ? (
+        <ListShimmer />
+      ) : (
+        <>
+          {getOrderList.map((order) => (
+            <div key={order._id}>
+              {order.orderItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="bg-white shadow-md rounded-xl p-4 cursor-pointer hover:scale-[1.02] transition-all duration-200 mt-4"
+                >
+                  <div className="flex justify-between ">
+                    {/* Left side: Image and Text */}
+                    <div
+                      className="flex"
+                      onClick={() => setSelectedOrder(item)}
+                    >
+                      <img
+                        src={
+                          `https://food-app-backend-41z6.onrender.com/` +
+                          item.file
+                        }
+                        alt="menuImg"
+                        className="w-16 h-16 rounded-lg"
+                      />
+                      <div className="ml-6">
+                        <h1 className="text-md font-semibold">{item.name}</h1>
+                        <h1 className="mt-2">₹{item.price}</h1>
+                      </div>
+                    </div>
+
+                    {/* Right side: Button */}
+                    <div className="mt-2">
+                      <button
+                        className={`p-1 w-[120px] mt-2 font-bold rounded-sm text-sm ${
+                          item.Status === "Pending"
+                            ? " bg-[#f84260]"
+                            : item.Status === "Completed"
+                            ? "bg-yellow-400"
+                            : item.Status === "Out for Delivery"
+                            ? "bg-yellow-400"
+                            : item.Status === "Delivered"
+                            ? "bg-green-700"
+                            : "bg-[#f84260]"
+                        }   text-white`}
+                      >
+                        {" "}
+                        {item.Status}
+                      </button>
+                      {item.Status === "Pending" ? (
+                        <button
+                          className="p-1 ml-6 w-[120px] text-white bg-[#f84260] mt-2 font-bold rounded-sm text-sm"
+                          onClick={() => yourDeleteFunction(item._id)}
+                        >
+                          Cancel
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                   </div>
                 </div>
-
-                {/* Right side: Button */}
-                <div className="mt-2">
-                  <button
-                    className={`p-1 w-[120px] mt-2 font-bold rounded-sm text-sm ${
-                      item.Status === "Pending"
-                        ? " bg-[#f84260]"
-                        : item.Status === "Completed"
-                        ? "bg-yellow-400"
-                        : item.Status === "Out for Delivery"
-                        ? "bg-yellow-400"
-                        : item.Status === "Delivered"
-                        ? "bg-green-700"
-                        : "bg-[#f84260]"
-                    }   text-white`}
-                  >
-                    {" "}
-                    {item.Status}
-                  </button>
-                  {item.Status === "Pending" ? (
-                    <button
-                      className="p-1 ml-6 w-[120px] text-white bg-[#f84260] mt-2 font-bold rounded-sm text-sm"
-                      onClick={() => yourDeleteFunction(item._id)}
-                    >
-                      Cancel
-                    </button>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
+              ))}
             </div>
           ))}
-        </div>
-      ))}
+        </>
+      )}
+
       {selectedOrder && (
         <OrderDetails
           order={selectedOrder}

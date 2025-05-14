@@ -21,7 +21,6 @@ const RestaurantCard = ({ resData }) => {
   const AddLike = async () => {
     const newLikedStatus = !liked; // Toggle local state
     setLiked(newLikedStatus); // Update UI instantly for a smooth user experience
-
     try {
       // Send updated liked status to backend
       const response = await axios.put(
@@ -64,13 +63,12 @@ const RestaurantCard = ({ resData }) => {
           {/* Like/Unlike Button */}
           <div className="mt-2">
             <button
-              onClick={AddLike}
               style={{ background: "none", border: "none", cursor: "pointer" }}
             >
               {liked ? (
-                <FavoriteIcon sx={{ color: "red" }} />
+                <FavoriteIcon sx={{ color: "red" }} onClick={AddLike} />
               ) : (
-                <FavoriteBorderIcon />
+                <FavoriteBorderIcon onClick={AddLike} />
               )}
             </button>
           </div>

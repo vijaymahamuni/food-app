@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import Box from "@mui/material/Box";
@@ -21,7 +21,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import StripePayment from "./StripePayment";
 import OrderSteps from "./OrderSteps";
-
+import UserContext from "../../utils/UserContext";
 const stripePromise = loadStripe(
   "pk_test_51QDra5DFEtVBuZZoInYFpSlSov8fwbrZlUpf3uHtzh8wyOoAsMDkZD5RO70SjlAlIeG89Ez5bfdTYcGxAU8hH0Yz00LRq3nc6A"
 );
@@ -35,6 +35,8 @@ const AddCartItems = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectAddress, setSelectAddress] = useState();
   const [selectType, setSelectType] = useState();
+  const { setUserName } = useContext(UserContext);
+
   const handleIncre = (id) => {
     setIncrements((prevIncrements) => ({
       ...prevIncrements,
@@ -82,6 +84,12 @@ const AddCartItems = () => {
       }
     } catch (error) {
       // console.error("Error fetching cart data", error);
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("token");
+      localStorage.removeItem("admin");
+      navigate("/home");
+      setUserName("Guest");
       MySwal.fire({
         icon: "failure",
         title: "Token is Expired",
